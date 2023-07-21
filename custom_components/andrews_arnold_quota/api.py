@@ -34,7 +34,6 @@ class AndrewsArnoldQuotaApiClient:
     async def async_get_data(self) -> any:
         """Get data from the API."""
         return await self._api_wrapper(method="get", url="https://quota.aa.net.uk")
-        # return await self._api_wrapper(method="get", url="https://jsonplaceholder.typicode.com/posts/1")
 
     async def _api_wrapper(
         self,
