@@ -19,6 +19,14 @@ Platform | Description
 -- | --
 `sensor` | Show info from Andrews & Arnold Quota API.
 
+## Sensors
+
+| Sensor      | Description                                                                                                                                                                                                               |
+| :------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `andrews_arnold_monthly_quota`    | Monthly Quota                                                                                                                                                                                              |
+| `sensor.andrews_arnold_quota_remaining` | Monthly Quota Remaining                                                                                                                                                         |
+| `sensor.andrews_arnold_quota_status`     | Quota Status |
+
 ## Installation
 
 1. Using the tool of choice open the directory (folder) for your HA configuration (where you find `configuration.yaml`).
@@ -29,7 +37,9 @@ Platform | Description
 1. Restart Home Assistant
 1. In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "Andrews & Arnold Quota"
 
-## Configuration is done in the UI
+## No Configuration Neccessary
+
+As long as you are connecting via Andrews & Arnold this API will automatically return the quota for the current connection.
 
 <!---->
 
