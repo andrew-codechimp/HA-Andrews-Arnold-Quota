@@ -5,5 +5,6 @@ LOGGER: Logger = getLogger(__package__)
 
 NAME = "Andrews & Arnold Quota"
 DOMAIN = "andrews_arnold_quota"
-VERSION = "0.0.0"
+VERSION = "0.0.1"
 ATTRIBUTION = "Data provided by https://www.aa.net.uk"
+MANUFACTURER = "CodeChimp"
