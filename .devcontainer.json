@@ -1,5 +1,5 @@
 {
-    "name": "andrew-codechimp/andrews_arnold_quota",
+    "name": "andrew-codechimp/andrews-arnold-quota",
     "image": "mcr.microsoft.com/vscode/devcontainers/python:0-3.10-bullseye",
     "postCreateCommand": "scripts/setup",
     "forwardPorts": [
