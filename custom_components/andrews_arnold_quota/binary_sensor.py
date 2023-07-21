@@ -8,13 +8,13 @@ from homeassistant.components.binary_sensor import (
 )
 
 from .const import DOMAIN
-from .coordinator import BlueprintDataUpdateCoordinator
-from .entity import IntegrationBlueprintEntity
+from .coordinator import AndrewsArnoldQuotaDataUpdateCoordinator
+from .entity import AndrewsArnoldQuotaEntity
 
 ENTITY_DESCRIPTIONS = (
     BinarySensorEntityDescription(
         key="andrews_arnold_quota",
-        name="Integration Blueprint Binary Sensor",
+        name="Andrews & Arnold Quota Binary Sensor",
         device_class=BinarySensorDeviceClass.CONNECTIVITY,
     ),
 )
@@ -24,7 +24,7 @@ async def async_setup_entry(hass, entry, async_add_devices):
     """Set up the binary_sensor platform."""
     coordinator = hass.data[DOMAIN][entry.entry_id]
     async_add_devices(
-        IntegrationBlueprintBinarySensor(
+        AndrewsArnoldQuotaBinarySensor(
             coordinator=coordinator,
             entity_description=entity_description,
         )
@@ -32,12 +32,12 @@ async def async_setup_entry(hass, entry, async_add_devices):
     )
 
 
-class IntegrationBlueprintBinarySensor(IntegrationBlueprintEntity, BinarySensorEntity):
+class AndrewsArnoldQuotaBinarySensor(AndrewsArnoldQuotaEntity, BinarySensorEntity):
     """andrews_arnold_quota binary_sensor class."""
 
     def __init__(
         self,
-        coordinator: BlueprintDataUpdateCoordinator,
+        coordinator: AndrewsArnoldQuotaDataUpdateCoordinator,
         entity_description: BinarySensorEntityDescription,
     ) -> None:
         """Initialize the binary_sensor class."""

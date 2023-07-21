@@ -8,50 +8,31 @@ import aiohttp
 import async_timeout
 
 
-class IntegrationBlueprintApiClientError(Exception):
+class AndrewsArnoldQuotaApiClientError(Exception):
     """Exception to indicate a general API error."""
 
 
-class IntegrationBlueprintApiClientCommunicationError(
-    IntegrationBlueprintApiClientError
-):
+class AndrewsArnoldQuotaApiClientCommunicationError(AndrewsArnoldQuotaApiClientError):
     """Exception to indicate a communication error."""
 
 
-class IntegrationBlueprintApiClientAuthenticationError(
-    IntegrationBlueprintApiClientError
-):
+class AndrewsArnoldQuotaApiClientAuthenticationError(AndrewsArnoldQuotaApiClientError):
     """Exception to indicate an authentication error."""
 
 
-class IntegrationBlueprintApiClient:
+class AndrewsArnoldQuotaApiClient:
     """Sample API Client."""
 
     def __init__(
         self,
-        username: str,
-        password: str,
         session: aiohttp.ClientSession,
     ) -> None:
         """Sample API Client."""
-        self._username = username
-        self._password = password
         self._session = session
 
     async def async_get_data(self) -> any:
         """Get data from the API."""
-        return await self._api_wrapper(
-            method="get", url="https://jsonplaceholder.typicode.com/posts/1"
-        )
-
-    async def async_set_title(self, value: str) -> any:
-        """Get data from the API."""
-        return await self._api_wrapper(
-            method="patch",
-            url="https://jsonplaceholder.typicode.com/posts/1",
-            data={"title": value},
-            headers={"Content-type": "application/json; charset=UTF-8"},
-        )
+        return await self._api_wrapper(method="get", url="https://quota.aa.net.uk")
 
     async def _api_wrapper(
         self,
@@ -68,23 +49,24 @@ class IntegrationBlueprintApiClient:
                     url=url,
                     headers=headers,
                     json=data,
+                    allow_redirects=True,
                 )
                 if response.status in (401, 403):
-                    raise IntegrationBlueprintApiClientAuthenticationError(
+                    raise AndrewsArnoldQuotaApiClientAuthenticationError(
                         "Invalid credentials",
                     )
                 response.raise_for_status()
                 return await response.json()
 
         except asyncio.TimeoutError as exception:
-            raise IntegrationBlueprintApiClientCommunicationError(
+            raise AndrewsArnoldQuotaApiClientCommunicationError(
                 "Timeout error fetching information",
             ) from exception
         except (aiohttp.ClientError, socket.gaierror) as exception:
-            raise IntegrationBlueprintApiClientCommunicationError(
+            raise AndrewsArnoldQuotaApiClientCommunicationError(
                 "Error fetching information",
             ) from exception
         except Exception as exception:  # pylint: disable=broad-except
-            raise IntegrationBlueprintApiClientError(
+            raise AndrewsArnoldQuotaApiClientError(
                 "Something really wrong happened!"
             ) from exception

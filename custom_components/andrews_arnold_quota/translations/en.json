@@ -1,16 +1,10 @@
 {
     "config": {
-        "step": {
-            "user": {
-                "description": "If you need help with the configuration have a look here: https://github.com/andrew-codechimp/HA-Andrews-Arnold-Quota",
-                "data": {
-                    "username": "Username",
-                    "password": "Password"
-                }
-            }
+        "abort": {
+            "single_instance_allowed": "Only one instance of Andrews & Arnold Quota is allowed"
         },
+        "step": {},
         "error": {
-            "auth": "Username/Password is wrong.",
             "connection": "Unable to connect to the server.",
             "unknown": "Unknown error occurred."
         }

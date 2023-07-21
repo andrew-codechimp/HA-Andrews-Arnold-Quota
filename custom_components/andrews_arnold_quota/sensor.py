@@ -4,8 +4,8 @@ from __future__ import annotations
 from homeassistant.components.sensor import SensorEntity, SensorEntityDescription
 
 from .const import DOMAIN
-from .coordinator import BlueprintDataUpdateCoordinator
-from .entity import IntegrationBlueprintEntity
+from .coordinator import AndrewsArnoldQuotaDataUpdateCoordinator
+from .entity import AndrewsArnoldQuotaEntity
 
 ENTITY_DESCRIPTIONS = (
     SensorEntityDescription(
@@ -20,7 +20,7 @@ async def async_setup_entry(hass, entry, async_add_devices):
     """Set up the sensor platform."""
     coordinator = hass.data[DOMAIN][entry.entry_id]
     async_add_devices(
-        IntegrationBlueprintSensor(
+        AndrewsArnoldQuotaSensor(
             coordinator=coordinator,
             entity_description=entity_description,
         )
@@ -28,12 +28,12 @@ async def async_setup_entry(hass, entry, async_add_devices):
     )
 
 
-class IntegrationBlueprintSensor(IntegrationBlueprintEntity, SensorEntity):
+class AndrewsArnoldQuotaSensor(AndrewsArnoldQuotaEntity, SensorEntity):
     """andrews_arnold_quota Sensor class."""
 
     def __init__(
         self,
-        coordinator: BlueprintDataUpdateCoordinator,
+        coordinator: AndrewsArnoldQuotaDataUpdateCoordinator,
         entity_description: SensorEntityDescription,
     ) -> None:
         """Initialize the sensor class."""
