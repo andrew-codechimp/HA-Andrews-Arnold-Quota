@@ -7,6 +7,7 @@ import socket
 import aiohttp
 import async_timeout
 
+from .const import DOMAIN, LOGGER
 
 class AndrewsArnoldQuotaApiClientError(Exception):
     """Exception to indicate a general API error."""
@@ -33,13 +34,17 @@ class AndrewsArnoldQuotaApiClient:
     async def async_get_data(self) -> any:
         """Get data from the API."""
         return await self._api_wrapper(method="get", url="https://quota.aa.net.uk")
+        # return await self._api_wrapper(method="get", url="https://jsonplaceholder.typicode.com/posts/1")
 
     async def _api_wrapper(
         self,
         method: str,
         url: str,
         data: dict | None = None,
-        headers: dict | None = None,
+        # headers: dict | None = None,
+        headers = {
+            "Accept": "application/json",
+        },
     ) -> any:
         """Get information from the API."""
         try:
@@ -47,9 +52,10 @@ class AndrewsArnoldQuotaApiClient:
                 response = await self._session.request(
                     method=method,
                     url=url,
+                    data=data,
                     headers=headers,
-                    json=data,
                     allow_redirects=True,
+                    verify_ssl=False,
                 )
                 if response.status in (401, 403):
                     raise AndrewsArnoldQuotaApiClientAuthenticationError(

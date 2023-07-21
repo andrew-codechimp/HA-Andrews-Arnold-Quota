@@ -43,4 +43,4 @@ class AndrewsArnoldQuotaSensor(AndrewsArnoldQuotaEntity, SensorEntity):
     @property
     def native_value(self) -> str:
         """Return the native value of the sensor."""
-        return self.coordinator.data.get("body")
+        return self.coordinator.data.get("quota_status")
