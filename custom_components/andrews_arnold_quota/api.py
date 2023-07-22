@@ -7,8 +7,6 @@ import socket
 import aiohttp
 import async_timeout
 
-from .const import DOMAIN, LOGGER
-
 class AndrewsArnoldQuotaApiClientError(Exception):
     """Exception to indicate a general API error."""
 
@@ -33,17 +31,15 @@ class AndrewsArnoldQuotaApiClient:
 
     async def async_get_data(self) -> any:
         """Get data from the API."""
-        return await self._api_wrapper(method="get", url="https://quota.aa.net.uk")
+        return await self._api_wrapper(method="get", url="https://quota.aa.net.uk",
+                                       headers = {"Accept": "application/json" })
 
     async def _api_wrapper(
         self,
         method: str,
         url: str,
         data: dict | None = None,
-        # headers: dict | None = None,
-        headers = {
-            "Accept": "application/json",
-        },
+        headers: dict | None = None,
     ) -> any:
         """Get information from the API."""
         try:
