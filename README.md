@@ -37,9 +37,32 @@ Platform | Description
 1. Restart Home Assistant
 1. In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "Andrews & Arnold Quota"
 
+## Installation
+
+### HACS
+
+1. Make sure the [HACS](https://github.com/custom-components/hacs) component is installed and working.
+1. Add the project repository `https://github.com/andrew-codechimp/HA-Andrews-Arnold-Quota` as a custom repository to HACS, see: https://hacs.xyz/docs/faq/custom_repositories
+1. Search for `Andrews & Arnold Quota` in HACS and install it under the "Integrations" category.
+
+### Manual Installation
+
+<details>
+<summary>Show detailed instructions</summary>
+
+Installation via HACS is recommended, but a manual setup is supported.
+
+1. Manually copy custom_component/andrews_arnold_quota folder from latest release to custom_components folder in your config folder.
+
+1. Restart Home Assistant.
+
+</details>
+
 ## No Configuration Neccessary
 
 As long as you are connecting via Andrews & Arnold this API will automatically return the quota for the current connection.
+
+Data is refreshed every 30 minutes.
 
 <!---->
 

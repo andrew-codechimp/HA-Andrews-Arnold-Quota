@@ -15,10 +15,6 @@ class AndrewsArnoldQuotaApiClientCommunicationError(AndrewsArnoldQuotaApiClientE
     """Exception to indicate a communication error."""
 
 
-class AndrewsArnoldQuotaApiClientAuthenticationError(AndrewsArnoldQuotaApiClientError):
-    """Exception to indicate an authentication error."""
-
-
 class AndrewsArnoldQuotaApiClient:
     """Sample API Client."""
 
@@ -52,10 +48,6 @@ class AndrewsArnoldQuotaApiClient:
                     allow_redirects=True,
                     verify_ssl=False,
                 )
-                if response.status in (401, 403):
-                    raise AndrewsArnoldQuotaApiClientAuthenticationError(
-                        "Invalid credentials",
-                    )
                 response.raise_for_status()
                 return await response.json()
 

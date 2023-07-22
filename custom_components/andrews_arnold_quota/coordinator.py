@@ -9,11 +9,9 @@ from homeassistant.helpers.update_coordinator import (
     DataUpdateCoordinator,
     UpdateFailed,
 )
-from homeassistant.exceptions import ConfigEntryAuthFailed
 
 from .api import (
     AndrewsArnoldQuotaApiClient,
-    AndrewsArnoldQuotaApiClientAuthenticationError,
     AndrewsArnoldQuotaApiClientError,
 )
 from .const import DOMAIN, LOGGER
@@ -36,14 +34,12 @@ class AndrewsArnoldQuotaDataUpdateCoordinator(DataUpdateCoordinator):
             hass=hass,
             logger=LOGGER,
             name=DOMAIN,
-            update_interval=timedelta(minutes=5),
+            update_interval=timedelta(minutes=30),
         )
 
     async def _async_update_data(self):
         """Update data via library."""
         try:
             return await self.client.async_get_data()
-        except AndrewsArnoldQuotaApiClientAuthenticationError as exception:
-            raise ConfigEntryAuthFailed(exception) from exception
         except AndrewsArnoldQuotaApiClientError as exception:
             raise UpdateFailed(exception) from exception
