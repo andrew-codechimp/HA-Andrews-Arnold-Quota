@@ -17,7 +17,7 @@ jobs:
       - name: "Checkout the repository"
         uses: "actions/checkout@v3.5.3"
 
-      - name: "Adjust version number"
+      - name: "Adjust version number in manifest"
         shell: "bash"
         run: |
           yq -i -o json '.version="${{ github.event.release.tag_name }}"' \
