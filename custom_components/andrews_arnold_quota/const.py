@@ -14,3 +14,4 @@ NAME = manifest_data.get("name")
 VERSION = manifest_data.get("version")
 ISSUEURL = manifest_data.get("issue_tracker")
 MANUFACTURER = "@Andrew-CodeChimp"
+ATTRIBUTION = "Data provided by https://www.aa.net.uk"
