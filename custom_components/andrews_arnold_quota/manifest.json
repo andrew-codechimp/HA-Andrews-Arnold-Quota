@@ -4,12 +4,12 @@
   "codeowners": [
     "@andrew-codechimp"
   ],
-  "dependencies": [],
-  "requirements": [],
   "config_flow": true,
+  "dependencies": [],
   "documentation": "https://github.com/andrew-codechimp/HA-Andrews-Arnold-Quota",
   "integration_type": "device",
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/andrew-codechimp/HA-Andrews-Arnold-Quota/issues",
+  "requirements": [],
   "version": "1.0.2"
 }
