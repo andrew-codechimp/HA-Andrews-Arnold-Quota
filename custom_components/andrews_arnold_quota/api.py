@@ -46,7 +46,7 @@ class AndrewsArnoldQuotaApiClient:
                     data=data,
                     headers=headers,
                     allow_redirects=True,
-                    verify_ssl=False,
+                    ssl=False,
                 )
                 response.raise_for_status()
                 return await response.json()
