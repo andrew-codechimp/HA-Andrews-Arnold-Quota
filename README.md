@@ -8,7 +8,7 @@
 
 [![Community Forum][forum-shield]][forum]
 
-_Integration to get broadband quota from Andrews & Arnold._
+_Integration to get broadband quota from [Andrews & Arnold](https://www.aa.net.uk)._
 
 **This integration will set up the following platforms.**
 
