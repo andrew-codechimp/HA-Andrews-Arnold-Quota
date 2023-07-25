@@ -10,6 +10,8 @@
 
 _Integration to get broadband quota from [Andrews & Arnold](https://www.aa.net.uk)._
 
+![Andrews & Arnold Device Info](images/screenshot.png "Andrews & Arnold Device Info")
+
 **This integration will set up the following platforms.**
 
 Platform | Description
