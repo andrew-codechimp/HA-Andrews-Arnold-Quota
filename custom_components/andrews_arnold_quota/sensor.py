@@ -1,32 +1,44 @@
 """Sensor platform for andrews_arnold_quota."""
 from __future__ import annotations
 
-from homeassistant.components.sensor import SensorEntity, SensorEntityDescription
+from dataclasses import dataclass
 
+from homeassistant.components.sensor import SensorEntity, SensorEntityDescription
 from homeassistant.const import (
     DATA_GIGABYTES,
 )
 
 from .const import DOMAIN
 from .coordinator import AndrewsArnoldQuotaDataUpdateCoordinator
-from .entity import AndrewsArnoldQuotaEntity
+from .entity import AndrewsArnoldQuotaEntity, AndrewsArnoldQuotaEntityDescription
+
+@dataclass
+class AndrewsArnoldQuotaSensorEntityDescription(
+    AndrewsArnoldQuotaEntityDescription,
+    SensorEntityDescription,
+):
+    """Class describing AndrewsArnoldQuota sensor entities."""
+
 
 ENTITY_DESCRIPTIONS = (
-    SensorEntityDescription(
+    AndrewsArnoldQuotaSensorEntityDescription(
         key="monthly_quota_gb",
-        name="Monthly Quota",
+        translation_key="monthly_quota",
+        entity_id="sensor.andrews_arnold_quota_monthly_quota",
         icon="mdi:counter",
         native_unit_of_measurement=DATA_GIGABYTES,
     ),
-    SensorEntityDescription(
+    AndrewsArnoldQuotaSensorEntityDescription(
         key="quota_remaining_gb",
-        name="Quota Remaining",
+        translation_key="quota_remaining",
+        entity_id="sensor.andrews_arnold_quota_quota_remaining",
         icon="mdi:counter",
         native_unit_of_measurement=DATA_GIGABYTES,
     ),
-    SensorEntityDescription(
+    AndrewsArnoldQuotaSensorEntityDescription(
         key="quota_status",
-        name="Quota Status",
+        translation_key="quota_status",
+        entity_id="sensor.andrews_arnold_quota_quota_status",
         icon="mdi:information-outline",
     ),
 )
@@ -50,13 +62,17 @@ class AndrewsArnoldQuotaSensor(AndrewsArnoldQuotaEntity, SensorEntity):
     def __init__(
         self,
         coordinator: AndrewsArnoldQuotaDataUpdateCoordinator,
-        entity_description: SensorEntityDescription,
+        entity_description: AndrewsArnoldQuotaSensorEntityDescription,
     ) -> None:
         """Initialize the sensor class."""
-        super().__init__(coordinator)
-        self._attr_unique_id = f"andrews_arnold_{entity_description.key}".lower()
-        self._attr_name = f'Andrews & Arnold Quota {entity_description.name}'
+        super().__init__(entity_description, coordinator)
+
         self.entity_description = entity_description
+        self._attr_unique_id = (
+            f"andrews_arnold_quota_{entity_description.key}".lower()
+        )
+        # self._attr_name = f"Andrews & Arnold Quota {entity_description.name}"
+        self._attr_has_entity_name = True
 
     @property
     def native_value(self) -> str:

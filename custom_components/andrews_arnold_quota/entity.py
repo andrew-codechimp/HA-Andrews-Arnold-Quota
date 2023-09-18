@@ -1,19 +1,29 @@
 """AndrewsArnoldQuotaEntity class."""
 from __future__ import annotations
 
-from homeassistant.helpers.entity import DeviceInfo
+from dataclasses import dataclass
+
+from homeassistant.helpers.entity import DeviceInfo, EntityDescription
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import ATTRIBUTION, DOMAIN, NAME, VERSION, MANUFACTURER
 from .coordinator import AndrewsArnoldQuotaDataUpdateCoordinator
 
+@dataclass
+class AndrewsArnoldQuotaEntityDescription(EntityDescription):
+    """Defines a base AndrewsArnoldQuota entity description."""
+
+    entity_id: str | None = None
 
 class AndrewsArnoldQuotaEntity(CoordinatorEntity):
     """AndrewsArnoldQuotaEntity class."""
 
     _attr_attribution = ATTRIBUTION
 
-    def __init__(self, coordinator: AndrewsArnoldQuotaDataUpdateCoordinator) -> None:
+    entity_description: AndrewsArnoldQuotaEntityDescription
+    _attr_has_entity_name = True
+
+    def __init__(self, description: AndrewsArnoldQuotaEntityDescription, coordinator: AndrewsArnoldQuotaDataUpdateCoordinator) -> None:
         """Initialize."""
         super().__init__(coordinator)
         self._attr_unique_id = coordinator.config_entry.entry_id
@@ -23,3 +33,6 @@ class AndrewsArnoldQuotaEntity(CoordinatorEntity):
             model=VERSION,
             manufacturer=MANUFACTURER,
         )
+        self.entity_description = description
+        if description.entity_id:
+            self.entity_id = description.entity_id
