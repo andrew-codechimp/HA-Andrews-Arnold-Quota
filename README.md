@@ -23,9 +23,9 @@ Platform | Description
 
 | Sensor      | Description                                                                                                                                                                                                               |
 | :------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `andrews_arnold_monthly_quota`    | Monthly Quota                                                                                                                                                                                              |
-| `sensor.andrews_arnold_quota_remaining` | Quota Remaining                                                                                                                                                         |
-| `sensor.andrews_arnold_quota_status`     | Quota Status |
+| `sensor.andrews_arnold_quota_monthly_quota`    | Monthly Quota                                                                                                                                                                                              |
+| `sensor.andrews_arnold_quota_quota_remaining` | Quota Remaining                                                                                                                                                         |
+| `sensor.andrews_arnold_quota_quota_status`     | Quota Status |
 
 ## Installation
 
