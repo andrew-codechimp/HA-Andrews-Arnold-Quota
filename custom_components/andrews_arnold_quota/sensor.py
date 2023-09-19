@@ -24,21 +24,21 @@ ENTITY_DESCRIPTIONS = (
     AndrewsArnoldQuotaSensorEntityDescription(
         key="monthly_quota_gb",
         translation_key="monthly_quota",
-        entity_id="sensor.andrews_arnold_quota_monthly_quota",
+        entity_id="sensor.andrews_arnold_monthly_quota",
         icon="mdi:counter",
         native_unit_of_measurement=DATA_GIGABYTES,
     ),
     AndrewsArnoldQuotaSensorEntityDescription(
         key="quota_remaining_gb",
         translation_key="quota_remaining",
-        entity_id="sensor.andrews_arnold_quota_quota_remaining",
+        entity_id="sensor.andrews_arnold_quota_remaining",
         icon="mdi:counter",
         native_unit_of_measurement=DATA_GIGABYTES,
     ),
     AndrewsArnoldQuotaSensorEntityDescription(
         key="quota_status",
         translation_key="quota_status",
-        entity_id="sensor.andrews_arnold_quota_quota_status",
+        entity_id="sensor.andrews_arnold_quota_status",
         icon="mdi:information-outline",
     ),
 )
