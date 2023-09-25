@@ -12,20 +12,19 @@ _Integration to get broadband quota from [Andrews & Arnold](https://www.aa.net.u
 
 ![Andrews & Arnold Device Info](https://github.com/andrew-codechimp/HA-Andrews-Arnold-Quota/blob/main/images/screenshot.png "Andrews & Arnold Device Info")
 
-
 **This integration will set up the following platforms.**
 
-Platform | Description
--- | --
-`sensor` | Show info from Andrews & Arnold Quota API.
+| Platform | Description                                |
+|----------|--------------------------------------------|
+| `sensor` | Show info from Andrews & Arnold Quota API. |
 
 ## Sensors
 
-| Sensor      | Description                                                                                                                                                                                                               |
-| :------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `sensor.andrews_arnold_monthly_quota`    | Monthly Quota                                                                                                                                                                                              |
-| `sensor.andrews_arnold_quota_remaining` | Quota Remaining                                                                                                                                                         |
-| `sensor.andrews_arnold_quota_status`     | Quota Status |
+| Sensor                                  | Description     |
+|:----------------------------------------|-----------------|
+| `sensor.andrews_arnold_monthly_quota`   | Monthly Quota   |
+| `sensor.andrews_arnold_quota_remaining` | Quota Remaining |
+| `sensor.andrews_arnold_quota_status`    | Quota Status    |
 
 ## Installation
 
@@ -44,13 +43,13 @@ Platform | Description
 
 Installation via HACS is recommended, but a manual setup is supported.
 
-1. Manually copy custom_components/andrews_arnold_quota folder from latest release to custom_components folder in your config folder.
+1. Manually copy custom_components/andrews_arnold_quota folder from the latest release to custom_components folder in your config folder.
 1. Restart Home Assistant.
 1. In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "Andrews & Arnold Quota"
 
 </details>
 
-## No Configuration Neccessary
+## No Configuration Necessary
 
 As long as you are connecting via Andrews & Arnold this API will automatically return the quota for the current connection.
 
@@ -60,11 +59,11 @@ Data is refreshed every 30 minutes.
 
 ## Contributions are welcome!
 
-If you want to contribute to this please read the [Contribution guidelines](CONTRIBUTING.md)
+If you want to contribute to this repository, please read the [Contribution guidelines](CONTRIBUTING.md)
 
 ## Disclaimer
 
-This integration is no way approved, endorsed or supported by Andrews & Arnold Ltd
+This integration is in no way approved, endorsed or supported by Andrews & Arnold Ltd.
 
 ***
 
