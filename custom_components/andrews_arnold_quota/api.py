@@ -21,14 +21,21 @@ class AndrewsArnoldQuotaApiClient:
     def __init__(
         self,
         session: aiohttp.ClientSession,
+        username: str,
+        password: str
     ) -> None:
         """Sample API Client."""
         self._session = session
+        self._username = username
+        self._password = password
 
     async def async_get_data(self) -> any:
         """Get data from the API."""
-        return await self._api_wrapper(method="get", url="https://quota.aa.net.uk",
-                                       headers = {"Accept": "application/json" })
+        return await self._api_wrapper(method="get", url="https://chaos2.aa.net.uk/broadband/quota",
+                                       headers = {
+                                           "Authorization": aiohttp.BasicAuth(self._username, self._password).encode(),
+                                           }
+                                        )
 
     async def _api_wrapper(
         self,
@@ -45,8 +52,6 @@ class AndrewsArnoldQuotaApiClient:
                     url=url,
                     data=data,
                     headers=headers,
-                    allow_redirects=True,
-                    ssl=False,
                 )
                 response.raise_for_status()
                 return await response.json()

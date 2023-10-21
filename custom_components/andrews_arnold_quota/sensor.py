@@ -22,24 +22,18 @@ class AndrewsArnoldQuotaSensorEntityDescription(
 
 ENTITY_DESCRIPTIONS = (
     AndrewsArnoldQuotaSensorEntityDescription(
-        key="monthly_quota_gb",
+        key="quota_monthly",
         translation_key="monthly_quota",
         entity_id="sensor.andrews_arnold_monthly_quota",
         icon="mdi:counter",
         native_unit_of_measurement=DATA_GIGABYTES,
     ),
     AndrewsArnoldQuotaSensorEntityDescription(
-        key="quota_remaining_gb",
+        key="quota_remaining",
         translation_key="quota_remaining",
         entity_id="sensor.andrews_arnold_quota_remaining",
         icon="mdi:counter",
         native_unit_of_measurement=DATA_GIGABYTES,
-    ),
-    AndrewsArnoldQuotaSensorEntityDescription(
-        key="quota_status",
-        translation_key="quota_status",
-        entity_id="sensor.andrews_arnold_quota_status",
-        icon="mdi:information-outline",
     ),
 )
 
@@ -77,4 +71,4 @@ class AndrewsArnoldQuotaSensor(AndrewsArnoldQuotaEntity, SensorEntity):
     @property
     def native_value(self) -> str:
         """Return the native value of the sensor."""
-        return self.coordinator.data.get(self.entity_description.key, None)
+        return round(int(self.coordinator.data["quota"][0][self.entity_description.key])/1000000000,1)

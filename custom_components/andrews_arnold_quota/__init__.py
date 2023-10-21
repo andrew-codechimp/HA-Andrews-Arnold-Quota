@@ -5,10 +5,17 @@ https://github.com/andrew-codechimp/HA-Andrews-Arnold-Quota
 """
 from __future__ import annotations
 
+import aiohttp
+
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
+
+from homeassistant.const import (
+    CONF_PASSWORD,
+    CONF_USERNAME,
+)
 
 from .api import AndrewsArnoldQuotaApiClient
 from .const import DOMAIN
@@ -23,12 +30,17 @@ PLATFORMS: list[Platform] = [
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up this integration using UI."""
     hass.data.setdefault(DOMAIN, {})
+
+    session = async_get_clientsession(hass)
+
     hass.data[DOMAIN][
         entry.entry_id
     ] = coordinator = AndrewsArnoldQuotaDataUpdateCoordinator(
         hass=hass,
         client=AndrewsArnoldQuotaApiClient(
-            session=async_get_clientsession(hass),
+            session=session,
+            username=entry.data[CONF_USERNAME],
+            password=entry.data[CONF_PASSWORD],
         ),
     )
     # https://developers.home-assistant.io/docs/integration_fetching_data#coordinated-single-api-poll-for-data-for-all-entities
