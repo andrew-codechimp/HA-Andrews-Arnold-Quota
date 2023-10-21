@@ -71,4 +71,6 @@ class AndrewsArnoldQuotaSensor(AndrewsArnoldQuotaEntity, SensorEntity):
     @property
     def native_value(self) -> str:
         """Return the native value of the sensor."""
-        return round(int(self.coordinator.data["quota"][0][self.entity_description.key])/1000000000,1)
+        return round(
+            int(self.coordinator.data["quota"][0][self.entity_description.key])/1000000000
+            ,1)
