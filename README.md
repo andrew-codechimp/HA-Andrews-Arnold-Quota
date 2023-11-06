@@ -34,7 +34,7 @@ This integration can be installed directly via HACS
 
 [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=andrew-codechimp&repository=HA-Andrews-Arnold-Quota&category=Integration)
 
-Or
+Or  
 Search for `Andrews & Arnold Quota` in HACS and install it under the "Integrations" category.  
 Restart Home Assistant  
 In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "Andrews & Arnold Quota"  
