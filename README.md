@@ -30,13 +30,14 @@ _Integration to get broadband quota from [Andrews & Arnold](https://www.aa.net.u
 
 ### HACS
 
+This integration can be installed directly via HACS
+
 [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=andrew-codechimp&repository=HA-Andrews-Arnold-Quota&category=Integration)
 
-1. Make sure the [HACS](https://github.com/custom-components/hacs) component is installed and working.
-1. Add the project repository `https://github.com/andrew-codechimp/HA-Andrews-Arnold-Quota` as a custom repository to HACS, see: https://hacs.xyz/docs/faq/custom_repositories
-1. Search for `Andrews & Arnold Quota` in HACS and install it under the "Integrations" category.
-1. Restart Home Assistant
-1. In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "Andrews & Arnold Quota"
+Or  
+Search for `Andrews & Arnold Quota` in HACS and install it under the "Integrations" category.  
+Restart Home Assistant  
+In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "Andrews & Arnold Quota"  
 
 ### Manual Installation
 
@@ -73,7 +74,7 @@ This integration is in no way approved, endorsed or supported by Andrews & Arnol
 [commits-shield]: https://img.shields.io/github/commit-activity/y/andrew-codechimp/HA-Andrews-Arnold-Quota.svg?style=for-the-badge
 [commits]: https://github.com/andrew-codechimp/HA-Andrews-Arnold-Quota/commits/main
 [hacs]: https://github.com/hacs/integration
-[hacsbadge]: https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge
+[hacsbadge]: https://img.shields.io/badge/HACS-Default-41BDF5.svg?style=for-the-badge
 [exampleimg]: example.png
 [forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge
 [forum]: https://community.home-assistant.io/t/custom-component-andrews-arnold-uk-broadband-quota/595491
