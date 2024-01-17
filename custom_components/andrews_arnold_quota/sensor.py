@@ -5,7 +5,7 @@ from dataclasses import dataclass
 
 from homeassistant.components.sensor import SensorEntity, SensorEntityDescription
 from homeassistant.const import (
-    DATA_GIGABYTES,
+    UnitOfInformation,
 )
 
 from .const import DOMAIN
@@ -26,14 +26,14 @@ ENTITY_DESCRIPTIONS = (
         translation_key="monthly_quota",
         entity_id="sensor.andrews_arnold_monthly_quota",
         icon="mdi:counter",
-        native_unit_of_measurement=DATA_GIGABYTES,
+        native_unit_of_measurement=UnitOfInformation.GIGABYTES,
     ),
     AndrewsArnoldQuotaSensorEntityDescription(
         key="quota_remaining_gb",
         translation_key="quota_remaining",
         entity_id="sensor.andrews_arnold_quota_remaining",
         icon="mdi:counter",
-        native_unit_of_measurement=DATA_GIGABYTES,
+        native_unit_of_measurement=UnitOfInformation.GIGABYTES,
     ),
     AndrewsArnoldQuotaSensorEntityDescription(
         key="quota_status",
