@@ -5,6 +5,7 @@
     "@andrew-codechimp"
   ],
   "config_flow": true,
+  "single_config_entry": true,
   "dependencies": [],
   "documentation": "https://github.com/andrew-codechimp/HA-Andrews-Arnold-Quota",
   "integration_type": "device",
