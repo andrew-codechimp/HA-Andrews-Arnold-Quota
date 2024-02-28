@@ -5,7 +5,6 @@
 [![License][license-shield]](LICENSE)
 
 [![hacs][hacsbadge]][hacs]
-
 [![Community Forum][forum-shield]][forum]
 
 _Integration to get broadband quota from [Andrews & Arnold](https://www.aa.net.uk)._
@@ -25,6 +24,12 @@ _Integration to get broadband quota from [Andrews & Arnold](https://www.aa.net.u
 | `sensor.andrews_arnold_monthly_quota`   | Monthly Quota   |
 | `sensor.andrews_arnold_quota_remaining` | Quota Remaining |
 | `sensor.andrews_arnold_quota_status`    | Quota Status    |
+
+
+*Please :star: this repo if you find it useful*  
+*If you want to show your support please*
+
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png)](https://www.buymeacoffee.com/codechimp)
 
 ## Installation
 
