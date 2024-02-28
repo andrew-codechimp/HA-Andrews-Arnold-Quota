@@ -46,9 +46,10 @@ In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "A
 
 Installation via HACS is recommended, but a manual setup is supported.
 
-1. Manually copy custom_components/andrews_arnold_quota folder from the latest release to custom_components folder in your config folder.
-1. Restart Home Assistant.
-1. In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "Andrews & Arnold Quota"
+* You should take the latest [published release](https://github.com/andrew-codechimp/ha-andrews-arnold-quota/releases).  
+* To install, place the contents of `custom_components` into the `<config directory>/custom_components` folder of your Home Assistant installation.  
+* Restart Home Assistant.
+* In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "Andrews & Arnold Quota"
 
 </details>
 
