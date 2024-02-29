@@ -2,6 +2,7 @@
 
 [![GitHub Release][releases-shield]][releases]
 [![GitHub Activity][commits-shield]][commits]
+[![Downloads][download-latest-shield]](Downloads)
 [![License][license-shield]](LICENSE)
 
 [![hacs][hacsbadge]][hacs]
@@ -87,3 +88,4 @@ This integration is in no way approved, endorsed or supported by Andrews & Arnol
 [license-shield]: https://img.shields.io/github/license/andrew-codechimp/HA-Andrews-Arnold-Quota.svg?style=for-the-badge
 [releases-shield]: https://img.shields.io/github/release/andrew-codechimp/HA-Andrews-Arnold-Quota.svg?style=for-the-badge
 [releases]: https://github.com/andrew-codechimp/HA-Andrews-Arnold-Quota/releases
+[download-latest-shield]: https://img.shields.io/github/downloads/andrew-codechimp/HA-Andrews-Arnold-Quota/latest/total?style=for-the-badge
