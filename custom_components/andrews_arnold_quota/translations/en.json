@@ -26,9 +26,6 @@
             },
             "quota_remaining": {
                 "name": "Quota Remaining"
-            },
-            "quota_status": {
-                "name": "Quota Status"
             }
         }
     }

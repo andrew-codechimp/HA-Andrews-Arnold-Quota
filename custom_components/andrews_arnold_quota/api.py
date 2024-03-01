@@ -1,70 +1,112 @@
-"""Sample API Client."""
-from __future__ import annotations
+"""Andrews & Arnold API Client."""
 
-import asyncio
-import socket
+from __future__ import annotations
+from logging import getLogger
+from typing import Any
 
 import aiohttp
-import async_timeout
+from asyncio import timeout
 
-class AndrewsArnoldQuotaApiClientError(Exception):
-    """Exception to indicate a general API error."""
+from homeassistant.core import HomeAssistant
 
-
-class AndrewsArnoldQuotaApiClientCommunicationError(AndrewsArnoldQuotaApiClientError):
-    """Exception to indicate a communication error."""
+from .const import LOGGER
 
 
 class AndrewsArnoldQuotaApiClient:
-    """Sample API Client."""
+    """Andrews & Arnold API Client."""
+
+    _url = "https://chaos2.aa.net.uk/broadband/"
 
     def __init__(
         self,
         session: aiohttp.ClientSession,
         username: str,
-        password: str
+        password: str,
     ) -> None:
-        """Sample API Client."""
+        """Andrews & Arnold API Client."""
         self._session = session
         self._username = username
         self._password = password
 
-    async def async_get_data(self) -> any:
-        """Get data from the API."""
-        return await self._api_wrapper(method="get", url="https://chaos2.aa.net.uk/broadband/quota",
-                                       headers = {
-                                           "Authorization": aiohttp.BasicAuth(self._username, self._password).encode(),
-                                           }
-                                        )
+        self._connected = False
+        self._error = ""
 
-    async def _api_wrapper(
+    async def connection_test(self) -> tuple:
+        """Test connection."""
+        await self.query("quota")
+
+        return self._connected, self._error
+
+    async def query(
         self,
-        method: str,
-        url: str,
-        data: dict | None = None,
-        headers: dict | None = None,
+        service: str,
+        params: dict[str, Any] | None = {},
     ) -> any:
         """Get information from the API."""
+
+        error = False
+
+        headers = {
+            "Authorization": aiohttp.BasicAuth(self._username, self._password).encode(),
+        }
+
         try:
-            async with async_timeout.timeout(10):
+            LOGGER.debug(
+                "%s query: %s, %s",
+                self._url,
+                service,
+                params,
+            )
+
+            async with timeout(10):
                 response = await self._session.request(
-                    method=method,
-                    url=url,
-                    data=data,
+                    method="get",
+                    url=f"{self._url}{service}",
+                    data=params,
                     headers=headers,
                 )
-                response.raise_for_status()
-                return await response.json()
 
-        except asyncio.TimeoutError as exception:
-            raise AndrewsArnoldQuotaApiClientCommunicationError(
-                "Timeout error fetching information",
-            ) from exception
-        except (aiohttp.ClientError, socket.gaierror) as exception:
-            raise AndrewsArnoldQuotaApiClientCommunicationError(
-                "Error fetching information",
-            ) from exception
-        except Exception as exception:  # pylint: disable=broad-except
-            raise AndrewsArnoldQuotaApiClientError(
-                "Something really wrong happened!"
-            ) from exception
+                if response.status == 200:
+                    data = await response.json()
+                    LOGGER.debug(
+                        "%s query response: %s",
+                        self._url,
+                        data,
+                    )
+
+                    if "error" in data:
+                        error = True
+                else:
+                    error = True
+        except Exception as exception:
+            print(exception)
+            error = True
+
+        if error:
+            try:
+                if data and "error" in data:
+                    errorcode = data["error"]
+                else:
+                    errorcode = response.status
+            except Exception:
+                errorcode = "no_response"
+
+            LOGGER.warning(
+                "%s unable to fetch data %s (%s)",
+                self._url,
+                service,
+                errorcode,
+            )
+
+            self._error = errorcode
+            return None
+
+        self._connected = True
+        self._error = ""
+
+        return data
+
+    @property
+    def error(self):
+        """Return error."""
+        return self._error

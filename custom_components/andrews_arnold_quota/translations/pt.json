@@ -3,10 +3,20 @@
         "abort": {
             "single_instance_allowed": "Só uma intância da  Andrews & Arnold Quota é permitida"
         },
-        "step": {},
-        "error": {
-            "connection": "Falha na ligação ao servidor.",
-            "unknown": "Erro desconhecido."
+        "step": {
+            "user": {
+                "data": {
+                    "username": "Username",
+                    "password": "Password"
+                }
+            },
+            "abort": {
+                "already_configured": "Device is already configured"
+            },
+            "error": {
+                "connection": "Falha na ligação ao servidor.",
+                "unknown": "Erro desconhecido."
+            }
         }
     },
     "entity": {
@@ -16,9 +26,6 @@
             },
             "quota_remaining": {
                 "name": "Quota remanescente"
-            },
-            "quota_status": {
-                "name": "Estado da Quota"
             }
         }
     }
