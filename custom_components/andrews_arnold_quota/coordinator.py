@@ -10,6 +10,7 @@ from homeassistant.helpers.update_coordinator import (
     DataUpdateCoordinator,
     UpdateFailed,
 )
+from homeassistant.exceptions import ConfigEntryAuthFailed
 
 from .api import AndrewsArnoldQuotaApiClient
 from .const import DOMAIN, LOGGER
@@ -41,6 +42,11 @@ class AndrewsArnoldQuotaDataUpdateCoordinator(DataUpdateCoordinator):
         try:
             self.quota = await self.client.query("quota")
         except Exception as exception:
+            if self.client.error == "Account authorisation failed":
+                raise ConfigEntryAuthFailed(
+                    "Unable to login, please re-login."
+                ) from None
+
             raise UpdateFailed(exception) from exception
 
         return self.quota

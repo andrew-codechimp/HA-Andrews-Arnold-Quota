@@ -70,7 +70,7 @@ class AndrewsArnoldQuotaApiClient:
                     data = await response.json()
                     LOGGER.debug(
                         "%s query response: %s",
-                        self._url,
+                        f"{self._url}{service}",
                         data,
                     )
 
