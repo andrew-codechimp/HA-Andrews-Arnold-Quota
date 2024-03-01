@@ -8,7 +8,6 @@ from typing import Any
 import voluptuous as vol
 
 from homeassistant import config_entries
-from homeassistant.config_entries import ConfigEntry, OptionsFlow
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
@@ -39,10 +38,6 @@ class AndrewsArnoldQuotaFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
     ) -> config_entries.FlowResult:
         """Handle a flow initialized by the user, unless one already exists."""
         errors = {}
-        defaults = {
-            CONF_USERNAME: "",
-            CONF_PASSWORD: "",
-        }
 
         if user_input is not None:
             if not self._reauth_entry:
@@ -77,7 +72,9 @@ class AndrewsArnoldQuotaFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
             errors=errors,
         )
 
-    async def async_step_reauth(self, user_input: Mapping[str, Any]) -> FlowResult:
+    async def async_step_reauth(
+        self, user_input: Mapping[str, Any]  # pylint: disable=unused-argument
+    ) -> FlowResult:
         """Perform reauth upon an API authentication error."""
         self._reauth_entry = self.hass.config_entries.async_get_entry(
             self.context["entry_id"]

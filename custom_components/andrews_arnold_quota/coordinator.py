@@ -40,13 +40,15 @@ class AndrewsArnoldQuotaDataUpdateCoordinator(DataUpdateCoordinator):
     async def _async_update_data(self):
         """Update data via library."""
         try:
-            self.quota = await self.client.query("quota")
-        except Exception as exception:
+            data = await self.client.query("quota")
             if self.client.error == "Account authorisation failed":
                 raise ConfigEntryAuthFailed(
                     "Unable to login, please re-login."
                 ) from None
 
+            self.quota = data
+
+        except Exception as exception:
             raise UpdateFailed(exception) from exception
 
         return self.quota

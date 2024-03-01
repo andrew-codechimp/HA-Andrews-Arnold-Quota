@@ -14,7 +14,7 @@
                 "already_configured": "Device is already configured"
             },
             "error": {
-                "connection": "Falha na ligação ao servidor.",
+                "no_connection": "Falha na ligação ao servidor.",
                 "unknown": "Erro desconhecido."
             }
         }

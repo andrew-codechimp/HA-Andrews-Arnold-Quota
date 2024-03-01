@@ -1,13 +1,10 @@
 """Andrews & Arnold API Client."""
 
 from __future__ import annotations
-from logging import getLogger
 from typing import Any
 
 import aiohttp
 from asyncio import timeout
-
-from homeassistant.core import HomeAssistant
 
 from .const import LOGGER
 
@@ -37,12 +34,11 @@ class AndrewsArnoldQuotaApiClient:
 
         return self._connected, self._error
 
-    async def query(
-        self,
-        service: str,
-        params: dict[str, Any] | None = {},
-    ) -> any:
+    async def query(self, service: str, params: dict[str, Any] = None) -> any:
         """Get information from the API."""
+
+        if params is None:
+            params = {}
 
         error = False
 
@@ -78,8 +74,7 @@ class AndrewsArnoldQuotaApiClient:
                         error = True
                 else:
                     error = True
-        except Exception as exception:
-            print(exception)
+        except Exception:  # pylint: disable=broad-exception-caught
             error = True
 
         if error:
@@ -88,8 +83,8 @@ class AndrewsArnoldQuotaApiClient:
                     errorcode = data["error"]
                 else:
                     errorcode = response.status
-            except Exception:
-                errorcode = "no_response"
+            except Exception:  # pylint: disable=broad-exception-caught
+                errorcode = "no_connection"
 
             LOGGER.warning(
                 "%s unable to fetch data %s (%s)",
