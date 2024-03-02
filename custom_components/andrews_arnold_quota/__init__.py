@@ -12,6 +12,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
+from homeassistant.exceptions import ConfigEntryAuthFailed
 
 from homeassistant.const import (
     CONF_PASSWORD,
@@ -33,14 +34,21 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     session = async_get_clientsession(hass)
 
+    client = AndrewsArnoldQuotaApiClient(
+        session=session,
+        username=entry.data[CONF_USERNAME],
+        password=entry.data[CONF_PASSWORD],
+    )
+
+    conn, errorcode = await client.connection_test()
+
+    if not conn and errorcode == "Account authorisation failed":
+        raise ConfigEntryAuthFailed("Unable to login, please re-login.") from None
+
     hass.data[DOMAIN][entry.entry_id] = coordinator = (
         AndrewsArnoldQuotaDataUpdateCoordinator(
             hass=hass,
-            client=AndrewsArnoldQuotaApiClient(
-                session=session,
-                username=entry.data[CONF_USERNAME],
-                password=entry.data[CONF_PASSWORD],
-            ),
+            client=client,
         )
     )
 
