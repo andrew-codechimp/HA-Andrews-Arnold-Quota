@@ -1,8 +1,5 @@
 {
     "config": {
-        "abort": {
-            "single_instance_allowed": "Só uma intância da  Andrews & Arnold Quota é permitida"
-        },
         "step": {
             "user": {
                 "data": {
@@ -10,13 +7,19 @@
                     "password": "Password"
                 }
             },
-            "abort": {
-                "already_configured": "Device is already configured"
-            },
-            "error": {
-                "no_connection": "Falha na ligação ao servidor.",
-                "unknown": "Erro desconhecido."
+            "reauth_confirm": {
+                "title": "Andrews & Arnold - Reauthentication",
+                "description": "Your account is unable to authenticate. Click Submit to re-setup."
             }
+        },
+        "abort": {
+            "single_instance_allowed": "Só uma intância da  Andrews & Arnold Quota é permitida",
+            "reauth_successful": "Reauthentication Successful"
+        },
+        "error": {
+            "Account authorisation failed": "Account authorisation failed.",
+            "no_connection": "Unable to connect to the server.",
+            "unknown": "Unknown error occurred."
         }
     },
     "entity": {

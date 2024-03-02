@@ -6,8 +6,6 @@ https://github.com/andrew-codechimp/HA-Andrews-Arnold-Quota
 
 from __future__ import annotations
 
-import aiohttp
-
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
@@ -34,6 +32,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     session = async_get_clientsession(hass)
 
+    if CONF_USERNAME not in entry.data or CONF_PASSWORD not in entry.data:
+        raise ConfigEntryAuthFailed("Unable to login, please re-login.") from None
+
     client = AndrewsArnoldQuotaApiClient(
         session=session,
         username=entry.data[CONF_USERNAME],
@@ -42,7 +43,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     conn, errorcode = await client.connection_test()
 
-    if not conn and errorcode == "Account authorisation failed":
+    if conn == False and errorcode == "Account authorisation failed":
         raise ConfigEntryAuthFailed("Unable to login, please re-login.") from None
 
     hass.data[DOMAIN][entry.entry_id] = coordinator = (

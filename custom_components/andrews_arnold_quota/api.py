@@ -6,13 +6,11 @@ from typing import Any
 import aiohttp
 from asyncio import timeout
 
-from .const import LOGGER
+from .const import LOGGER, API_URL
 
 
 class AndrewsArnoldQuotaApiClient:
     """Andrews & Arnold API Client."""
-
-    _url = "https://chaos2.aa.net.uk/broadband/"
 
     def __init__(
         self,
@@ -21,6 +19,7 @@ class AndrewsArnoldQuotaApiClient:
         password: str,
     ) -> None:
         """Andrews & Arnold API Client."""
+        self._url = API_URL
         self._session = session
         self._username = username
         self._password = password

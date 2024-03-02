@@ -2,15 +2,11 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping
 from typing import Any
 
 import voluptuous as vol
 
 from homeassistant import config_entries
-from homeassistant.config_entries import ConfigEntry
-from homeassistant.data_entry_flow import FlowResult
-from homeassistant.core import callback
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from homeassistant.const import (
@@ -41,41 +37,43 @@ class AndrewsArnoldQuotaConfigFlowHandler(config_entries.ConfigFlow, domain=DOMA
     ) -> config_entries.FlowResult:
         """Handle a flow initialized by the user, unless one already exists."""
 
-        if user_input is None:
-            return self.async_show_form(
-                step_id="user", data_schema=STEP_USER_DATA_SCHEMA
-            )
-
         errors = {}
 
-        if not self._reauth_entry:
-            if self._async_current_entries():
-                return self.async_abort(reason="single_instance_allowed")
+        if user_input is not None:
+            if not self._reauth_entry:
+                if self._async_current_entries():
+                    return self.async_abort(reason="single_instance_allowed")
 
-        api = AndrewsArnoldQuotaApiClient(
-            async_get_clientsession(self.hass),
-            user_input[CONF_USERNAME],
-            user_input[CONF_PASSWORD],
+            api = AndrewsArnoldQuotaApiClient(
+                async_get_clientsession(self.hass),
+                user_input[CONF_USERNAME],
+                user_input[CONF_PASSWORD],
+            )
+
+            conn, errorcode = await api.connection_test()
+
+            if conn == False:
+                errors["base"] = errorcode
+                LOGGER.error("Andrews & Arnold Quota connection error (%s)", errorcode)
+
+            # Save instance
+            if not errors:
+                if self._reauth_entry is None:
+                    return self.async_create_entry(
+                        title="Andrews & Arnold Quota", data=user_input
+                    )
+                else:
+                    self.hass.config_entries.async_update_entry(
+                        self._reauth_entry, data=user_input
+                    )
+                    await self.hass.config_entries.async_reload(
+                        self._reauth_entry.entry_id
+                    )
+                    return self.async_abort(reason="reauth_successful")
+
+        return self.async_show_form(
+            step_id="user", data_schema=STEP_USER_DATA_SCHEMA, errors=errors
         )
-
-        conn, errorcode = await api.connection_test()
-
-        if not conn:
-            errors["base"] = errorcode
-            LOGGER.error("Andrews & Arnold Quota connection error (%s)", errorcode)
-
-        # Save instance
-        if not errors:
-            if self._reauth_entry is None:
-                return self.async_create_entry(
-                    title="Andrews & Arnold Quota", data=user_input
-                )
-            else:
-                self.hass.config_entries.async_update_entry(
-                    self._reauth_entry, data=user_input
-                )
-                await self.hass.config_entries.async_reload(self._reauth_entry.entry_id)
-                return self.async_abort(reason="reauth_successful")
 
     async def async_step_reauth(
         self, user_input=None  # pylint: disable=unused-argument
