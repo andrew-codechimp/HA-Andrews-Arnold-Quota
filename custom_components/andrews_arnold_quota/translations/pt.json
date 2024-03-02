@@ -2,7 +2,7 @@
     "config": {
         "step": {
             "user": {
-                "description": "Login with your countrol account (e.g. abc@a) and password",
+                "description": "Login with your control account (e.g. abc@a) and password",
                 "data": {
                     "username": "Username",
                     "password": "Password"
