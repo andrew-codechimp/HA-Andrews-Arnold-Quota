@@ -2,6 +2,7 @@
     "config": {
         "step": {
             "user": {
+                "description": "Login with your countrol account (e.g. abc@a) and password",
                 "data": {
                     "username": "Username",
                     "password": "Password"
@@ -18,6 +19,7 @@
         },
         "error": {
             "Account authorisation failed": "Account authorisation failed.",
+            "Control authorisation failed": "Control authorisation failed.",
             "no_connection": "Unable to connect to the server.",
             "unknown": "Unknown error occurred."
         }
