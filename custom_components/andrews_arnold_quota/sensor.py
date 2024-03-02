@@ -1,4 +1,5 @@
 """Sensor platform for andrews_arnold_quota."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -11,6 +12,7 @@ from homeassistant.const import (
 from .const import DOMAIN
 from .coordinator import AndrewsArnoldQuotaDataUpdateCoordinator
 from .entity import AndrewsArnoldQuotaEntity, AndrewsArnoldQuotaEntityDescription
+
 
 @dataclass
 class AndrewsArnoldQuotaSensorEntityDescription(
@@ -62,15 +64,20 @@ class AndrewsArnoldQuotaSensor(AndrewsArnoldQuotaEntity, SensorEntity):
         super().__init__(entity_description, coordinator)
 
         self.entity_description = entity_description
-        self._attr_unique_id = (
-            f"andrews_arnold_quota_{entity_description.key}".lower()
-        )
-        # self._attr_name = f"Andrews & Arnold Quota {entity_description.name}"
+        self._attr_unique_id = f"andrews_arnold_quota_{entity_description.key}".lower()
         self._attr_has_entity_name = True
 
     @property
     def native_value(self) -> str:
         """Return the native value of the sensor."""
-        return round(
-            int(self.coordinator.data["quota"][0][self.entity_description.key])/1000000000
-            ,1)
+        if (
+            self.coordinator.data
+            and "quota" in self.coordinator.data
+            and self.entity_description.key in self.coordinator.data["quota"][0]
+        ):
+            return round(
+                int(self.coordinator.data["quota"][0][self.entity_description.key])
+                / 1000000000,
+                1,
+            )
+        return None

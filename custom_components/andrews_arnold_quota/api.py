@@ -41,9 +41,8 @@ class AndrewsArnoldQuotaApiClient:
 
         error = False
 
-        headers = {
-            "Authorization": aiohttp.BasicAuth(self._username, self._password).encode(),
-        }
+        params["control_login"] = self._username
+        params["control_password"] = self._password
 
         try:
             LOGGER.debug(
@@ -55,10 +54,10 @@ class AndrewsArnoldQuotaApiClient:
 
             async with timeout(10):
                 response = await self._session.request(
-                    method="get",
+                    method="post",
                     url=f"{self._url}{service}",
                     data=params,
-                    headers=headers,
+                    # headers=headers,
                 )
 
                 if response.status == 200:
