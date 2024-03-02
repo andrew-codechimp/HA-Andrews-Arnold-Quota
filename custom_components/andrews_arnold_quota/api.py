@@ -45,19 +45,11 @@ class AndrewsArnoldQuotaApiClient:
         params["control_password"] = self._password
 
         try:
-            LOGGER.debug(
-                "%s query: %s, %s",
-                self._url,
-                service,
-                params,
-            )
-
             async with timeout(10):
                 response = await self._session.request(
                     method="post",
                     url=f"{self._url}{service}",
                     data=params,
-                    # headers=headers,
                 )
 
                 if response.status == 200:
