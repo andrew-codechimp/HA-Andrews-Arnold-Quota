@@ -19,6 +19,7 @@
         },
         "error": {
             "Control authorisation failed": "Control authorisation failed.",
+            "Bad control-login": "Bad control-login.",
             "no_connection": "Unable to connect to the server.",
             "unknown": "Unknown error occurred."
         }

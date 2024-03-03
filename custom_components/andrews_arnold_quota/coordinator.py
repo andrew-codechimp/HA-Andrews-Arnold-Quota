@@ -41,7 +41,10 @@ class AndrewsArnoldQuotaDataUpdateCoordinator(DataUpdateCoordinator):
         """Update data via library."""
         try:
             data = await self.client.query("quota")
-            if self.client.error == "Control authorisation failed":
+            if (
+                self.client.error == "Control authorisation failed"
+                or self.client.error == "Bad control-login"
+            ):
                 raise ConfigEntryAuthFailed(
                     "Unable to login, please re-login."
                 ) from None

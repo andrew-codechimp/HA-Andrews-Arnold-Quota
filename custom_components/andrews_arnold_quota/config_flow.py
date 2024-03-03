@@ -25,11 +25,14 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
     }
 )
 
+CONFIG_VERSION = 2
+
 
 class AndrewsArnoldQuotaConfigFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
     """Config flow for AndrewsArnoldQuota."""
 
-    VERSION = 1
+    VERSION = CONFIG_VERSION
+
     _reauth_entry: config_entries.ConfigEntry | None = None
 
     async def async_step_user(

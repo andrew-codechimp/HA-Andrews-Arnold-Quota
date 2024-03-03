@@ -6,24 +6,47 @@ https://github.com/andrew-codechimp/HA-Andrews-Arnold-Quota
 
 from __future__ import annotations
 
+from awesomeversion.awesomeversion import AwesomeVersion
+
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
+from homeassistant.helpers.typing import ConfigType
 from homeassistant.exceptions import ConfigEntryAuthFailed
+from homeassistant.const import __version__ as HA_VERSION  # noqa: N812
 
 from homeassistant.const import (
     CONF_PASSWORD,
     CONF_USERNAME,
 )
 
+from .config_flow import CONFIG_VERSION
+
 from .api import AndrewsArnoldQuotaApiClient
-from .const import DOMAIN
+from .const import DOMAIN, LOGGER
 from .coordinator import AndrewsArnoldQuotaDataUpdateCoordinator
 
 PLATFORMS: list[Platform] = [
     Platform.SENSOR,
 ]
+
+MIN_HA_VERSION = "2023.12"
+
+
+async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
+    """Integration setup."""
+
+    if AwesomeVersion(HA_VERSION) < AwesomeVersion(MIN_HA_VERSION):  # pragma: no cover
+        msg = (
+            "This integration requires at least HomeAssistant version "
+            f" {MIN_HA_VERSION}, you are running version {HA_VERSION}."
+            " Please upgrade HomeAssistant to continue use this integration."
+        )
+        LOGGER.critical(msg)
+        return False
+
+    return True
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
@@ -43,7 +66,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     conn, errorcode = await client.connection_test()
 
-    if conn == False and errorcode == "Control authorisation failed":
+    if conn == False:
         raise ConfigEntryAuthFailed("Unable to login, please re-login.") from None
 
     hass.data[DOMAIN][entry.entry_id] = coordinator = (
@@ -61,6 +84,33 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     return True
 
 
+async def async_migrate_entry(hass: HomeAssistant, config_entry: ConfigEntry):
+    """Migrate old config."""
+    new_version = CONFIG_VERSION
+
+    if config_entry.version == 1:
+        # Version 1 did not authenticate, add blank config data
+        LOGGER.debug("Migrating config entry from version %s", config_entry.version)
+
+        new_data = {**config_entry.data}
+        new_data[CONF_USERNAME] = ""
+        new_data[CONF_PASSWORD] = ""
+
+        config_entry.version = new_version
+
+        hass.config_entries.async_update_entry(
+            config_entry, title=config_entry.title, data=new_data
+        )
+
+        LOGGER.info(
+            "Entry %s successfully migrated to version %s.",
+            config_entry.entry_id,
+            new_version,
+        )
+
+    return True
+
+
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Handle removal of an entry."""
     if unloaded := await hass.config_entries.async_unload_platforms(entry, PLATFORMS):
@@ -72,3 +122,9 @@ async def async_reload_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
     """Reload config entry."""
     await async_unload_entry(hass, entry)
     await async_setup_entry(hass, entry)
+
+
+@callback
+async def async_update_options(hass: HomeAssistant, entry: ConfigEntry) -> None:
+    """Update options."""
+    await hass.config_entries.async_reload(entry.entry_id)
