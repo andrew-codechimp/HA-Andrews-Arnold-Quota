@@ -24,18 +24,20 @@ class AndrewsArnoldQuotaSensorEntityDescription(
 
 ENTITY_DESCRIPTIONS = (
     AndrewsArnoldQuotaSensorEntityDescription(
-        key="quota_monthly",
+        key="monthly_quota_gb",
         translation_key="monthly_quota",
         entity_id="sensor.andrews_arnold_monthly_quota",
         icon="mdi:counter",
         native_unit_of_measurement=UnitOfInformation.GIGABYTES,
+        api_field="quota_monthly",
     ),
     AndrewsArnoldQuotaSensorEntityDescription(
-        key="quota_remaining",
+        key="quota_remaining_gb",
         translation_key="quota_remaining",
         entity_id="sensor.andrews_arnold_quota_remaining",
         icon="mdi:counter",
         native_unit_of_measurement=UnitOfInformation.GIGABYTES,
+        api_field="quota_remaining",
     ),
 )
 
@@ -73,10 +75,12 @@ class AndrewsArnoldQuotaSensor(AndrewsArnoldQuotaEntity, SensorEntity):
         if (
             self.coordinator.data
             and "quota" in self.coordinator.data
-            and self.entity_description.key in self.coordinator.data["quota"][0]
+            and self.entity_description.api_field in self.coordinator.data["quota"][0]
         ):
             return round(
-                int(self.coordinator.data["quota"][0][self.entity_description.key])
+                int(
+                    self.coordinator.data["quota"][0][self.entity_description.api_field]
+                )
                 / 1000000000,
                 1,
             )
