@@ -24,17 +24,18 @@ from homeassistant.const import (
 from .config_flow import CONFIG_VERSION
 
 from .api import AndrewsArnoldQuotaApiClient
-from .const import DOMAIN, LOGGER
+from .const import DOMAIN, LOGGER, MIN_HA_VERSION
 from .coordinator import AndrewsArnoldQuotaDataUpdateCoordinator
 
 PLATFORMS: list[Platform] = [
     Platform.SENSOR,
 ]
 
-MIN_HA_VERSION = "2023.12"
 
-
-async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
+async def async_setup(
+    hass: HomeAssistant,  # pylint: disable=unused-argument
+    config: ConfigType,  # pylint: disable=unused-argument
+) -> bool:
     """Integration setup."""
 
     if AwesomeVersion(HA_VERSION) < AwesomeVersion(MIN_HA_VERSION):  # pragma: no cover
