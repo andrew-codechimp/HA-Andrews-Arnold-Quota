@@ -73,7 +73,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     conn, errorcode = await client.connection_test()
 
-    if conn == False:
+    if conn is False:
         raise ConfigEntryAuthFailed("Unable to login, please re-login.") from None
 
     hass.data[DOMAIN][entry.entry_id] = coordinator = (

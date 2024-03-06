@@ -55,7 +55,7 @@ class AndrewsArnoldQuotaConfigFlowHandler(config_entries.ConfigFlow, domain=DOMA
 
             conn, errorcode = await api.connection_test()
 
-            if conn == False:
+            if conn is False:
                 errors["base"] = errorcode
                 LOGGER.error("Andrews & Arnold Quota connection error (%s)", errorcode)
 
