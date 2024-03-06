@@ -13,6 +13,7 @@ from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.typing import ConfigType
+from homeassistant.helpers import config_validation as cv
 from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.const import __version__ as HA_VERSION  # noqa: N812
 
@@ -30,6 +31,8 @@ from .coordinator import AndrewsArnoldQuotaDataUpdateCoordinator
 PLATFORMS: list[Platform] = [
     Platform.SENSOR,
 ]
+
+CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
 
 
 async def async_setup(
