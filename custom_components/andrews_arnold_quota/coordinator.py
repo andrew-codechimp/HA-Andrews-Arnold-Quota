@@ -1,4 +1,5 @@
 """DataUpdateCoordinator for andrews_arnold_quota."""
+
 from __future__ import annotations
 
 from datetime import timedelta
@@ -9,19 +10,18 @@ from homeassistant.helpers.update_coordinator import (
     DataUpdateCoordinator,
     UpdateFailed,
 )
+from homeassistant.exceptions import ConfigEntryAuthFailed
 
-from .api import (
-    AndrewsArnoldQuotaApiClient,
-    AndrewsArnoldQuotaApiClientError,
-)
+from .api import AndrewsArnoldQuotaApiClient
 from .const import DOMAIN, LOGGER
 
 
-# https://developers.home-assistant.io/docs/integration_fetching_data#coordinated-single-api-poll-for-data-for-all-entities
 class AndrewsArnoldQuotaDataUpdateCoordinator(DataUpdateCoordinator):
     """Class to manage fetching data from the API."""
 
     config_entry: ConfigEntry
+
+    quota = any
 
     def __init__(
         self,
@@ -40,6 +40,18 @@ class AndrewsArnoldQuotaDataUpdateCoordinator(DataUpdateCoordinator):
     async def _async_update_data(self):
         """Update data via library."""
         try:
-            return await self.client.async_get_data()
-        except AndrewsArnoldQuotaApiClientError as exception:
+            data = await self.client.query("quota")
+            if (
+                self.client.error == "Control authorisation failed"
+                or self.client.error == "Bad control-login"
+            ):
+                raise ConfigEntryAuthFailed(
+                    "Unable to login, please re-login."
+                ) from None
+
+            self.quota = data
+
+        except Exception as exception:
             raise UpdateFailed(exception) from exception
+
+        return self.quota

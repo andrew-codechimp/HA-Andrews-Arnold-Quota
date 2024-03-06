@@ -1,12 +1,27 @@
 {
     "config": {
-        "abort": {
-            "single_instance_allowed": "Só uma intância da  Andrews & Arnold Quota é permitida"
+        "step": {
+            "user": {
+                "description": "Login with your control account (e.g. abc@a) and password",
+                "data": {
+                    "username": "Username",
+                    "password": "Password"
+                }
+            },
+            "reauth_confirm": {
+                "title": "Andrews & Arnold - Reauthentication",
+                "description": "Your account is unable to authenticate. Click Submit to re-setup."
+            }
         },
-        "step": {},
+        "abort": {
+            "single_instance_allowed": "Só uma intância da  Andrews & Arnold Quota é permitida",
+            "reauth_successful": "Reauthentication Successful"
+        },
         "error": {
-            "connection": "Falha na ligação ao servidor.",
-            "unknown": "Erro desconhecido."
+            "Control authorisation failed": "Control authorisation failed.",
+            "Bad control-login": "Bad control-login.",
+            "no_connection": "Unable to connect to the server.",
+            "unknown": "Unknown error occurred."
         }
     },
     "entity": {
@@ -16,9 +31,6 @@
             },
             "quota_remaining": {
                 "name": "Quota remanescente"
-            },
-            "quota_status": {
-                "name": "Estado da Quota"
             }
         }
     }

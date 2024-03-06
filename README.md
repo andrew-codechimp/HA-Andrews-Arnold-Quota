@@ -2,6 +2,7 @@
 
 [![GitHub Release][releases-shield]][releases]
 [![GitHub Activity][commits-shield]][commits]
+[![Downloads][download-latest-shield]](Downloads)
 [![License][license-shield]](LICENSE)
 
 [![hacs][hacsbadge]][hacs]
@@ -23,13 +24,13 @@ _Integration to get broadband quota from [Andrews & Arnold](https://www.aa.net.u
 |:----------------------------------------|-----------------|
 | `sensor.andrews_arnold_monthly_quota`   | Monthly Quota   |
 | `sensor.andrews_arnold_quota_remaining` | Quota Remaining |
-| `sensor.andrews_arnold_quota_status`    | Quota Status    |
 
 
 *Please :star: this repo if you find it useful*  
 *If you want to show your support please*
 
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png)](https://www.buymeacoffee.com/codechimp)
+
 
 ## Installation
 
@@ -58,9 +59,9 @@ Installation via HACS is recommended, but a manual setup is supported.
 
 </details>
 
-## No Configuration Necessary
+## Configuration
 
-As long as you are connecting via Andrews & Arnold this API will automatically return the quota for the current connection.
+Enter your control account details (what you have setup in your router) to connect to the Andrews & Arnold API.
 
 Data is refreshed every 30 minutes.
 
@@ -87,3 +88,4 @@ This integration is in no way approved, endorsed or supported by Andrews & Arnol
 [license-shield]: https://img.shields.io/github/license/andrew-codechimp/HA-Andrews-Arnold-Quota.svg?style=for-the-badge
 [releases-shield]: https://img.shields.io/github/release/andrew-codechimp/HA-Andrews-Arnold-Quota.svg?style=for-the-badge
 [releases]: https://github.com/andrew-codechimp/HA-Andrews-Arnold-Quota/releases
+[download-latest-shield]: https://img.shields.io/github/downloads/andrew-codechimp/HA-Andrews-Arnold-Quota/latest/total?style=for-the-badge
