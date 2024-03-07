@@ -42,11 +42,11 @@ class AndrewsArnoldQuotaConfigFlowHandler(config_entries.ConfigFlow, domain=DOMA
 
         errors = {}
 
-        if user_input is not None:
-            if not self._reauth_entry:
-                if self._async_current_entries():
-                    return self.async_abort(reason="single_instance_allowed")
+        if not self._reauth_entry:
+            if self._async_current_entries():
+                return self.async_abort(reason="single_instance_allowed")
 
+        if user_input is not None:
             api = AndrewsArnoldQuotaApiClient(
                 async_get_clientsession(self.hass),
                 user_input[CONF_USERNAME],
