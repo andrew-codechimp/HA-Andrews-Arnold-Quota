@@ -61,7 +61,7 @@ Installation via HACS is recommended, but a manual setup is supported.
 
 ## Configuration
 
-Enter your control account details (what you have setup in your router) to connect to the Andrews & Arnold API.
+Enter your control account details to connect to the Andrews & Arnold API.
 
 Data is refreshed every 30 minutes.
 

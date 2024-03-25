@@ -28,10 +28,10 @@
     "entity": {
         "sensor": {
             "monthly_quota": {
-                "name": "Quota mensal"
+                "name": "{line_id} Quota mensal"
             },
             "quota_remaining": {
-                "name": "Quota remanescente"
+                "name": "{line_id} Quota remanescente"
             }
         }
     }
