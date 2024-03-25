@@ -38,7 +38,7 @@ class AndrewsArnoldQuotaDataUpdateCoordinator(DataUpdateCoordinator):
         )
 
     async def _async_update_data(self):
-        """Update data via library."""
+        """Update data."""
         try:
             data = await self.client.query("quota")
             if (

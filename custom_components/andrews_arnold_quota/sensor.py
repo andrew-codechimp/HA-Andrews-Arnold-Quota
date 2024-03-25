@@ -26,7 +26,7 @@ ENTITY_DESCRIPTIONS = (
     AndrewsArnoldQuotaSensorEntityDescription(
         key="monthly_quota_gb",
         translation_key="monthly_quota",
-        entity_id="sensor.andrews_arnold_monthly_quota",
+        entity_id="sensor.andrews_arnold_{line_id}_monthly_quota",
         icon="mdi:counter",
         native_unit_of_measurement=UnitOfInformation.GIGABYTES,
         api_field="quota_monthly",
@@ -34,7 +34,7 @@ ENTITY_DESCRIPTIONS = (
     AndrewsArnoldQuotaSensorEntityDescription(
         key="quota_remaining_gb",
         translation_key="quota_remaining",
-        entity_id="sensor.andrews_arnold_quota_remaining",
+        entity_id="sensor.andrews_arnold__{line_id}_quota_remaining",
         icon="mdi:counter",
         native_unit_of_measurement=UnitOfInformation.GIGABYTES,
         api_field="quota_remaining",
@@ -45,14 +45,18 @@ ENTITY_DESCRIPTIONS = (
 async def async_setup_entry(hass, entry, async_add_devices):
     """Set up the sensor platform."""
     coordinator = hass.data[DOMAIN][entry.entry_id]
-    async_add_devices(
-        AndrewsArnoldQuotaSensor(
-            coordinator=coordinator,
-            entity_description=entity_description,
-        )
-        for entity_description in ENTITY_DESCRIPTIONS
-    )
 
+    for line in coordinator.data["quota"]:
+        {
+            async_add_devices(
+                AndrewsArnoldQuotaSensor(
+                    coordinator=coordinator,
+                    entity_description=entity_description,
+                    line_id = line["ID"]
+                )
+                for entity_description in ENTITY_DESCRIPTIONS
+            )
+        }
 
 class AndrewsArnoldQuotaSensor(AndrewsArnoldQuotaEntity, SensorEntity):
     """andrews_arnold_quota Sensor class."""
@@ -61,12 +65,17 @@ class AndrewsArnoldQuotaSensor(AndrewsArnoldQuotaEntity, SensorEntity):
         self,
         coordinator: AndrewsArnoldQuotaDataUpdateCoordinator,
         entity_description: AndrewsArnoldQuotaSensorEntityDescription,
+        line_id: str,
     ) -> None:
         """Initialize the sensor class."""
+
+        entity_description.entity_id = entity_description.entity_id.replace("{line_id}", line_id)
+        self._attr_translation_placeholders = {"line_id": line_id}
+
         super().__init__(entity_description, coordinator)
 
         self.entity_description = entity_description
-        self._attr_unique_id = f"andrews_arnold_quota_{entity_description.key}".lower()
+        self._attr_unique_id = f"andrews_arnold_quota_{line_id}_{entity_description.key}".lower()
         self._attr_has_entity_name = True
 
     @property
