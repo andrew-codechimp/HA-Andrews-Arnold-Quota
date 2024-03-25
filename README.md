@@ -22,8 +22,8 @@ _Integration to get broadband quota from [Andrews & Arnold](https://www.aa.net.u
 
 | Sensor                                  | Description     |
 |:----------------------------------------|-----------------|
-| `sensor.andrews_arnold_monthly_quota`   | Monthly Quota   |
-| `sensor.andrews_arnold_quota_remaining` | Quota Remaining |
+| `sensor.andrews_arnold_XXXXX_monthly_quota`   | Monthly Quota, XXXXX is your line id to support multiple lines  |
+| `sensor.andrews_arnold_XXXXX_quota_remaining` | Quota Remaining, XXXXX is your line id to support multiple lines |
 
 
 *Please :star: this repo if you find it useful*  
