@@ -6,6 +6,8 @@ https://github.com/andrew-codechimp/HA-Andrews-Arnold-Quota
 
 from __future__ import annotations
 
+from aioandrewsarnold.andrewsarnold import AndrewsArnoldClient, AndrewsArnoldError, AndrewsArnoldAuthenticationError
+
 from awesomeversion.awesomeversion import AwesomeVersion
 
 from homeassistant.config_entries import ConfigEntry
@@ -14,7 +16,10 @@ from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.typing import ConfigType
 from homeassistant.helpers import config_validation as cv
-from homeassistant.exceptions import ConfigEntryAuthFailed
+from homeassistant.exceptions import (
+    ConfigEntryAuthFailed,
+    ConfigEntryNotReady,
+)
 from homeassistant.const import __version__ as HA_VERSION  # noqa: N812
 
 from homeassistant.const import (
@@ -24,7 +29,7 @@ from homeassistant.const import (
 
 from .config_flow import CONFIG_VERSION
 
-from .api import AndrewsArnoldQuotaApiClient
+# from .api import AndrewsArnoldQuotaApiClient
 from .const import DOMAIN, LOGGER, MIN_HA_VERSION
 from .coordinator import AndrewsArnoldQuotaDataUpdateCoordinator
 
@@ -65,16 +70,19 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     if entry.data[CONF_USERNAME] == "" or entry.data[CONF_PASSWORD] == "":
         raise ConfigEntryAuthFailed("Unable to login, please re-login.") from None
 
-    client = AndrewsArnoldQuotaApiClient(
+    client = AndrewsArnoldClient(
         session=session,
-        username=entry.data[CONF_USERNAME],
-        password=entry.data[CONF_PASSWORD],
+        control_login=entry.data[CONF_USERNAME],
+        control_password=entry.data[CONF_PASSWORD],
     )
 
-    conn, errorcode = await client.connection_test()
+    try:
+        await client.get_quotas()
+    except AndrewsArnoldAuthenticationError as error:
+        raise ConfigEntryAuthFailed("Unable to login, please re-login.") from error
+    except AndrewsArnoldError as error:
+        raise ConfigEntryNotReady(error) from error
 
-    if conn is False:
-        raise ConfigEntryAuthFailed("Unable to login, please re-login.") from None
 
     hass.data[DOMAIN][entry.entry_id] = coordinator = (
         AndrewsArnoldQuotaDataUpdateCoordinator(

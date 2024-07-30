@@ -6,6 +6,8 @@ from typing import Any
 
 import voluptuous as vol
 
+from aioandrewsarnold.andrewsarnold import AndrewsArnoldClient, AndrewsArnoldError, AndrewsArnoldAuthenticationError, QuotaResponse
+
 from homeassistant import config_entries
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
@@ -13,8 +15,6 @@ from homeassistant.const import (
     CONF_PASSWORD,
     CONF_USERNAME,
 )
-
-from .api import AndrewsArnoldQuotaApiClient
 
 from .const import DOMAIN, LOGGER
 
@@ -47,17 +47,19 @@ class AndrewsArnoldQuotaConfigFlowHandler(config_entries.ConfigFlow, domain=DOMA
                 return self.async_abort(reason="single_instance_allowed")
 
         if user_input is not None:
-            api = AndrewsArnoldQuotaApiClient(
+            client = AndrewsArnoldClient(
                 async_get_clientsession(self.hass),
-                user_input[CONF_USERNAME],
-                user_input[CONF_PASSWORD],
+                control_login=user_input[CONF_USERNAME],
+                control_password=user_input[CONF_PASSWORD],
             )
 
-            conn, errorcode = await api.connection_test()
+            try:
+                await client.get_quotas()
 
-            if conn is False:
-                errors["base"] = errorcode
-                LOGGER.error("Andrews & Arnold Quota connection error (%s)", errorcode)
+            except AndrewsArnoldAuthenticationError:
+                return {"base": "invalid_auth"}, None
+            except AndrewsArnoldError:
+                return {"base": "unknown"}, None
 
             # Save instance
             if not errors:

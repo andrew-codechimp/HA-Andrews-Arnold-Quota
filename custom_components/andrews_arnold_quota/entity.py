@@ -11,12 +11,11 @@ from .const import ATTRIBUTION, DOMAIN, NAME, VERSION, MANUFACTURER
 from .coordinator import AndrewsArnoldQuotaDataUpdateCoordinator
 
 
-@dataclass
+@dataclass(kw_only=True)
 class AndrewsArnoldQuotaEntityDescription(EntityDescription):
     """Defines a base AndrewsArnoldQuota entity description."""
 
     entity_id: str | None = None
-    api_field: str | None = None
 
 
 class AndrewsArnoldQuotaEntity(CoordinatorEntity):

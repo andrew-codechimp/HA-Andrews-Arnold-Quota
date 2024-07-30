@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from datetime import timedelta
 
+from aioandrewsarnold.andrewsarnold import AndrewsArnoldClient, AndrewsArnoldAuthenticationError, QuotaResponse
+
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import (
@@ -12,21 +14,19 @@ from homeassistant.helpers.update_coordinator import (
 )
 from homeassistant.exceptions import ConfigEntryAuthFailed
 
-from .api import AndrewsArnoldQuotaApiClient
 from .const import DOMAIN, LOGGER
 
 
-class AndrewsArnoldQuotaDataUpdateCoordinator(DataUpdateCoordinator):
+class AndrewsArnoldQuotaDataUpdateCoordinator(DataUpdateCoordinator[QuotaResponse]):
     """Class to manage fetching data from the API."""
 
     config_entry: ConfigEntry
-
-    quota = any
+    quotas: QuotaResponse
 
     def __init__(
         self,
         hass: HomeAssistant,
-        client: AndrewsArnoldQuotaApiClient,
+        client: AndrewsArnoldClient,
     ) -> None:
         """Initialize."""
         self.client = client
@@ -40,18 +40,11 @@ class AndrewsArnoldQuotaDataUpdateCoordinator(DataUpdateCoordinator):
     async def _async_update_data(self):
         """Update data."""
         try:
-            data = await self.client.query("quota")
-            if (
-                self.client.error == "Control authorisation failed"
-                or self.client.error == "Bad control-login"
-            ):
-                raise ConfigEntryAuthFailed(
-                    "Unable to login, please re-login."
-                ) from None
+            self.quotas = await self.client.get_quotas()
 
-            self.quota = data
+        except AndrewsArnoldAuthenticationError as error:
+            raise ConfigEntryAuthFailed("Unable to login, please re-login.") from error
+        except Exception as error:
+            raise UpdateFailed(error) from error
 
-        except Exception as exception:
-            raise UpdateFailed(exception) from exception
-
-        return self.quota
+        return self.quotas

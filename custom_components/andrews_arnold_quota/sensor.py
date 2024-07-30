@@ -2,25 +2,29 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
+
+from aioandrewsarnold import Quota
 
 from homeassistant.components.sensor import SensorEntity, SensorEntityDescription
 from homeassistant.const import (
     UnitOfInformation,
 )
+from homeassistant.helpers.typing import StateType
 
 from .const import DOMAIN
 from .coordinator import AndrewsArnoldQuotaDataUpdateCoordinator
 from .entity import AndrewsArnoldQuotaEntity, AndrewsArnoldQuotaEntityDescription
 
 
-@dataclass
+@dataclass(kw_only=True)
 class AndrewsArnoldQuotaSensorEntityDescription(
     AndrewsArnoldQuotaEntityDescription,
-    SensorEntityDescription,
+    SensorEntityDescription
 ):
     """Class describing AndrewsArnoldQuota sensor entities."""
-
+    value_fn: Callable[[Quota], StateType]
 
 ENTITY_DESCRIPTIONS = (
     AndrewsArnoldQuotaSensorEntityDescription(
@@ -29,7 +33,7 @@ ENTITY_DESCRIPTIONS = (
         entity_id="sensor.andrews_arnold_{line_id}_monthly_quota",
         icon="mdi:counter",
         native_unit_of_measurement=UnitOfInformation.GIGABYTES,
-        api_field="quota_monthly",
+        value_fn=lambda quota: quota.quota_monthly
     ),
     AndrewsArnoldQuotaSensorEntityDescription(
         key="quota_remaining_gb",
@@ -37,22 +41,23 @@ ENTITY_DESCRIPTIONS = (
         entity_id="sensor.andrews_arnold__{line_id}_quota_remaining",
         icon="mdi:counter",
         native_unit_of_measurement=UnitOfInformation.GIGABYTES,
-        api_field="quota_remaining",
+        value_fn=lambda quota: quota.quota_remaining
     ),
 )
 
 
 async def async_setup_entry(hass, entry, async_add_devices):
     """Set up the sensor platform."""
+    coordinator: AndrewsArnoldQuotaDataUpdateCoordinator
     coordinator = hass.data[DOMAIN][entry.entry_id]
 
-    for line in coordinator.data["quota"]:
+    for line in coordinator.data.quotas:
         {
             async_add_devices(
                 AndrewsArnoldQuotaSensor(
                     coordinator=coordinator,
                     entity_description=entity_description,
-                    line_id = line["ID"]
+                    line_id = line.quota_id
                 )
                 for entity_description in ENTITY_DESCRIPTIONS
             )
@@ -61,6 +66,10 @@ async def async_setup_entry(hass, entry, async_add_devices):
 class AndrewsArnoldQuotaSensor(AndrewsArnoldQuotaEntity, SensorEntity):
     """andrews_arnold_quota Sensor class."""
 
+    coordinator: AndrewsArnoldQuotaDataUpdateCoordinator
+    entity_description: AndrewsArnoldQuotaSensorEntityDescription
+    line_id: str
+
     def __init__(
         self,
         coordinator: AndrewsArnoldQuotaDataUpdateCoordinator,
@@ -68,29 +77,30 @@ class AndrewsArnoldQuotaSensor(AndrewsArnoldQuotaEntity, SensorEntity):
         line_id: str,
     ) -> None:
         """Initialize the sensor class."""
-
+        self.line_id = line_id
         entity_description.entity_id = entity_description.entity_id.replace("{line_id}", line_id)
         self._attr_translation_placeholders = {"line_id": line_id}
 
         super().__init__(entity_description, coordinator)
 
+        self.coordinator = coordinator
         self.entity_description = entity_description
+
         self._attr_unique_id = f"andrews_arnold_quota_{line_id}_{entity_description.key}".lower()
         self._attr_has_entity_name = True
+
 
     @property
     def native_value(self) -> str:
         """Return the native value of the sensor."""
-        if (
-            self.coordinator.data
-            and "quota" in self.coordinator.data
-            and self.entity_description.api_field in self.coordinator.data["quota"][0]
-        ):
-            return round(
-                int(
-                    self.coordinator.data["quota"][0][self.entity_description.api_field]
+
+        for quota in self.coordinator.data.quotas:
+            if quota.quota_id == self.line_id:
+                return round(
+                    int(
+                        self.entity_description.value_fn(quota)
+                    )
+                    / 1000000000,
+                    1,
                 )
-                / 1000000000,
-                1,
-            )
         return None

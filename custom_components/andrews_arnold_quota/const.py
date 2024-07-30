@@ -18,4 +18,3 @@ VERSION = manifest_data.get("version")
 ISSUEURL = manifest_data.get("issue_tracker")
 MANUFACTURER = "@Andrew-CodeChimp"
 ATTRIBUTION = "Data provided by https://www.aa.net.uk"
-API_URL = "https://chaos2.aa.net.uk/broadband/"
