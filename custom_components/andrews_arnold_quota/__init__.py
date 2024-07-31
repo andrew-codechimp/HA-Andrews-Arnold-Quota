@@ -6,7 +6,11 @@ https://github.com/andrew-codechimp/HA-Andrews-Arnold-Quota
 
 from __future__ import annotations
 
-from aioandrewsarnold.andrewsarnold import AndrewsArnoldClient, AndrewsArnoldError, AndrewsArnoldAuthenticationError
+from aioandrewsarnold.andrewsarnold import (
+    AndrewsArnoldClient,
+    AndrewsArnoldError,
+    AndrewsArnoldAuthenticationError,
+)
 
 from awesomeversion.awesomeversion import AwesomeVersion
 
@@ -31,7 +35,7 @@ from .config_flow import CONFIG_VERSION
 
 # from .api import AndrewsArnoldQuotaApiClient
 from .const import DOMAIN, LOGGER, MIN_HA_VERSION
-from .coordinator import AndrewsArnoldQuotaDataUpdateCoordinator
+from .coordinator import AndrewsArnoldInfoCoordinator, AndrewsArnoldData
 
 PLATFORMS: list[Platform] = [
     Platform.SENSOR,
@@ -77,21 +81,20 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     )
 
     try:
-        await client.get_quotas()
+        await client.get_info()
     except AndrewsArnoldAuthenticationError as error:
         raise ConfigEntryAuthFailed("Unable to login, please re-login.") from error
     except AndrewsArnoldError as error:
         raise ConfigEntryNotReady(error) from error
 
-
-    hass.data[DOMAIN][entry.entry_id] = coordinator = (
-        AndrewsArnoldQuotaDataUpdateCoordinator(
-            hass=hass,
-            client=client,
-        )
+    coordinator = AndrewsArnoldInfoCoordinator(
+        hass=hass,
+        client=client,
     )
 
     await coordinator.async_config_entry_first_refresh()
+
+    entry.runtime_data = AndrewsArnoldData(client, coordinator)
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     entry.async_on_unload(entry.add_update_listener(async_reload_entry))
@@ -127,10 +130,8 @@ async def async_migrate_entry(hass: HomeAssistant, config_entry: ConfigEntry):
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Handle removal of an entry."""
-    if unloaded := await hass.config_entries.async_unload_platforms(entry, PLATFORMS):
-        hass.data[DOMAIN].pop(entry.entry_id)
-    return unloaded
+    """Unload a config entry."""
+    return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
 
 
 async def async_reload_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:

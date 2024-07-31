@@ -1,0 +1,12 @@
+{
+    "entity": {
+        "sensor": {
+            "monthly_quota": {
+                "default": "mdi:counter"
+            },
+            "quota_remaining": {
+                "default": "mdi:counter"
+            }
+        }
+    }
+}

@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 from datetime import timedelta
+from dataclasses import dataclass
 
-from aioandrewsarnold.andrewsarnold import AndrewsArnoldClient, AndrewsArnoldAuthenticationError, QuotaResponse
+from aioandrewsarnold.andrewsarnold import AndrewsArnoldClient, AndrewsArnoldAuthenticationError, InfoResponse
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
@@ -16,12 +17,22 @@ from homeassistant.exceptions import ConfigEntryAuthFailed
 
 from .const import DOMAIN, LOGGER
 
+@dataclass
+class AndrewsArnoldData:
+    """Andrews & Arnold data type."""
 
-class AndrewsArnoldQuotaDataUpdateCoordinator(DataUpdateCoordinator[QuotaResponse]):
+    client: AndrewsArnoldClient
+    coordinator: AndrewsArnoldInfoCoordinator
+
+
+type AndrewsArnoldConfigEntry = ConfigEntry[AndrewsArnoldData]
+
+
+class AndrewsArnoldInfoCoordinator(DataUpdateCoordinator[InfoResponse]):
     """Class to manage fetching data from the API."""
 
     config_entry: ConfigEntry
-    quotas: QuotaResponse
+    info: InfoResponse
 
     def __init__(
         self,
@@ -40,11 +51,11 @@ class AndrewsArnoldQuotaDataUpdateCoordinator(DataUpdateCoordinator[QuotaRespons
     async def _async_update_data(self):
         """Update data."""
         try:
-            self.quotas = await self.client.get_quotas()
+            self.info = await self.client.get_info()
 
         except AndrewsArnoldAuthenticationError as error:
             raise ConfigEntryAuthFailed("Unable to login, please re-login.") from error
         except Exception as error:
             raise UpdateFailed(error) from error
 
-        return self.quotas
+        return self.info

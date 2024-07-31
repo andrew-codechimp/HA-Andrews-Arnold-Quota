@@ -1,5 +1,5 @@
 colorlog==6.8.2
-homeassistant==2023.12.0
+homeassistant==2024.6.0
 pip>=21.0,<24.2
 ruff==0.5.4
-aioandrewsarnold==1.0.1
+aioandrewsarnold==3.0.1

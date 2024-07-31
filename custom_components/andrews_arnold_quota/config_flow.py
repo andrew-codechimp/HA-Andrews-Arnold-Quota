@@ -6,7 +6,7 @@ from typing import Any
 
 import voluptuous as vol
 
-from aioandrewsarnold.andrewsarnold import AndrewsArnoldClient, AndrewsArnoldError, AndrewsArnoldAuthenticationError, QuotaResponse
+from aioandrewsarnold.andrewsarnold import AndrewsArnoldClient, AndrewsArnoldError, AndrewsArnoldAuthenticationError, InfoResponse
 
 from homeassistant import config_entries
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
@@ -48,13 +48,13 @@ class AndrewsArnoldQuotaConfigFlowHandler(config_entries.ConfigFlow, domain=DOMA
 
         if user_input is not None:
             client = AndrewsArnoldClient(
-                async_get_clientsession(self.hass),
+                session=async_get_clientsession(self.hass),
                 control_login=user_input[CONF_USERNAME],
                 control_password=user_input[CONF_PASSWORD],
             )
 
             try:
-                await client.get_quotas()
+                await client.get_info()
 
             except AndrewsArnoldAuthenticationError:
                 return {"base": "invalid_auth"}, None
@@ -64,6 +64,7 @@ class AndrewsArnoldQuotaConfigFlowHandler(config_entries.ConfigFlow, domain=DOMA
             # Save instance
             if not errors:
                 if self._reauth_entry is None:
+                    await self.async_set_unique_id(user_input[CONF_USERNAME])
                     return self.async_create_entry(
                         title="Andrews & Arnold Quota", data=user_input
                     )

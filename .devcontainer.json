@@ -1,6 +1,6 @@
 {
     "name": "andrew-codechimp/andrews-arnold-quota",
-    "image": "mcr.microsoft.com/vscode/devcontainers/python:0-3.11-bullseye",
+    "image": "mcr.microsoft.com/vscode/devcontainers/python:3.12-bullseye",
     "postCreateCommand": "scripts/setup",
     "forwardPorts": [
         8123
@@ -17,7 +17,8 @@
                 "ms-python.python",
                 "github.vscode-pull-request-github",
                 "ryanluker.vscode-coverage-gutters",
-                "ms-python.vscode-pylance"
+                "ms-python.vscode-pylance",
+                "charliermarsh.ruff"
             ],
             "settings": {
                 "files.eol": "\n",
