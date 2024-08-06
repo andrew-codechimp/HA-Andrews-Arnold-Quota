@@ -10,6 +10,8 @@
 
 _Integration to get broadband quota from [Andrews & Arnold](https://www.aa.net.uk)._
 
+As there are [no quotas](https://www.aa.net.uk/etc/news/update-to-monthly-usage-quotas/) on the non-lite packages I am no longer able to test or maintain this integration, leaving it for those on lite packages.  
+
 ![Andrews & Arnold Device Info](https://github.com/andrew-codechimp/HA-Andrews-Arnold-Quota/blob/main/images/screenshot.png "Andrews & Arnold Device Info")
 
 **This integration will set up the following platforms.**
