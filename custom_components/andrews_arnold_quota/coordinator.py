@@ -15,6 +15,7 @@ from homeassistant.exceptions import ConfigEntryAuthFailed
 from .api import AndrewsArnoldQuotaApiClient
 from .const import DOMAIN, LOGGER
 
+RETRY_TIMES = 4
 
 class AndrewsArnoldQuotaDataUpdateCoordinator(DataUpdateCoordinator):
     """Class to manage fetching data from the API."""
@@ -22,6 +23,7 @@ class AndrewsArnoldQuotaDataUpdateCoordinator(DataUpdateCoordinator):
     config_entry: ConfigEntry
 
     quota = any
+    retry_count=0
 
     def __init__(
         self,
@@ -39,6 +41,7 @@ class AndrewsArnoldQuotaDataUpdateCoordinator(DataUpdateCoordinator):
 
     async def _async_update_data(self):
         """Update data."""
+
         try:
             data = await self.client.query("quota")
             if (
@@ -50,8 +53,13 @@ class AndrewsArnoldQuotaDataUpdateCoordinator(DataUpdateCoordinator):
                 ) from None
 
             self.quota = data
+            self.retry_count = 0
 
         except Exception as exception:
-            raise UpdateFailed(exception) from exception
+            self.retry_count += 1
+
+            if self.retry_count >= RETRY_TIMES:
+                self.retry_count = 0
+                raise UpdateFailed(exception) from exception
 
         return self.quota
