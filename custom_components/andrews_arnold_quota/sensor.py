@@ -46,17 +46,18 @@ async def async_setup_entry(hass, entry, async_add_devices):
     """Set up the sensor platform."""
     coordinator = hass.data[DOMAIN][entry.entry_id]
 
-    for line in coordinator.data["quota"]:
-        {
-            async_add_devices(
-                AndrewsArnoldQuotaSensor(
-                    coordinator=coordinator,
-                    entity_description=entity_description,
-                    line_id = line["ID"]
+    if coordinator.data:
+        for line in coordinator.data["quota"]:
+            {
+                async_add_devices(
+                    AndrewsArnoldQuotaSensor(
+                        coordinator=coordinator,
+                        entity_description=entity_description,
+                        line_id = line["ID"]
+                    )
+                    for entity_description in ENTITY_DESCRIPTIONS
                 )
-                for entity_description in ENTITY_DESCRIPTIONS
-            )
-        }
+            }
 
 class AndrewsArnoldQuotaSensor(AndrewsArnoldQuotaEntity, SensorEntity):
     """andrews_arnold_quota Sensor class."""
