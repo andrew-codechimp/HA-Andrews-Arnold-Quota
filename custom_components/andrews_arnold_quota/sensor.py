@@ -8,6 +8,7 @@ from homeassistant.components.sensor import SensorEntity, SensorEntityDescriptio
 from homeassistant.const import (
     UnitOfInformation,
 )
+from homeassistant.util import slugify
 
 from .const import DOMAIN
 from .coordinator import AndrewsArnoldQuotaDataUpdateCoordinator
@@ -70,7 +71,7 @@ class AndrewsArnoldQuotaSensor(AndrewsArnoldQuotaEntity, SensorEntity):
     ) -> None:
         """Initialize the sensor class."""
 
-        entity_description.entity_id = entity_description.entity_id.replace("{line_id}", line_id)
+        entity_description.entity_id = entity_description.entity_id.replace("{line_id}", slugify(line_id.lower()))
         self._attr_translation_placeholders = {"line_id": line_id}
 
         super().__init__(entity_description, coordinator)
