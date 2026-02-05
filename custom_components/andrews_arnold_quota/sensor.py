@@ -34,7 +34,7 @@ ENTITY_DESCRIPTIONS = (
     AndrewsArnoldQuotaSensorEntityDescription(
         key="quota_remaining_gb",
         translation_key="quota_remaining",
-        entity_id="sensor.andrews_arnold__{line_id}_quota_remaining",
+        entity_id="sensor.andrews_arnold_{line_id}_quota_remaining",
         icon="mdi:counter",
         native_unit_of_measurement=UnitOfInformation.GIGABYTES,
         api_field="quota_remaining",

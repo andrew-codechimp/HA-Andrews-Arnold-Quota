@@ -6,6 +6,7 @@ from dataclasses import dataclass
 
 from homeassistant.helpers.entity import DeviceInfo, EntityDescription
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
+from homeassistant.util import slugify
 
 from .const import ATTRIBUTION, DOMAIN, NAME, VERSION, MANUFACTURER
 from .coordinator import AndrewsArnoldQuotaDataUpdateCoordinator
@@ -43,4 +44,4 @@ class AndrewsArnoldQuotaEntity(CoordinatorEntity):
         )
         self.entity_description = description
         if description.entity_id:
-            self.entity_id = description.entity_id
+            self.entity_id = slugify(description.entity_id.lower().replace("__", "_"))
