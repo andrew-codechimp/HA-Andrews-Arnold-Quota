@@ -1,10 +1,12 @@
 """Andrews & Arnold API Client."""
+# mypy: disable-error-code="no-untyped-def"
 
 from __future__ import annotations
+
 from typing import Any
+from asyncio import timeout
 
 import aiohttp
-from asyncio import timeout
 
 from .const import LOGGER, API_URL
 
@@ -33,7 +35,7 @@ class AndrewsArnoldQuotaApiClient:
 
         return self._connected, self._error
 
-    async def query(self, service: str, params: dict[str, Any] = None) -> any:
+    async def query(self, service: str, params: dict[str, Any] | None = None) -> Any:
         """Get information from the API."""
 
         if params is None:
@@ -64,7 +66,7 @@ class AndrewsArnoldQuotaApiClient:
                         error = True
                 else:
                     error = True
-        except Exception:  # pylint: disable=broad-exception-caught
+        except Exception:  # noqa: BLE001
             error = True
 
         if error:
@@ -73,7 +75,7 @@ class AndrewsArnoldQuotaApiClient:
                     errorcode = data["error"]
                 else:
                     errorcode = response.status
-            except Exception:  # pylint: disable=broad-exception-caught
+            except Exception:  # noqa: BLE001
                 errorcode = "no_connection"
 
             LOGGER.warning(

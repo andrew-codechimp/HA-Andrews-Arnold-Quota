@@ -2,7 +2,7 @@
     "name": "Andrews & Arnold Quota",
     "filename": "andrews_arnold_quota.zip",
     "hide_default_branch": true,
-    "homeassistant": "2024.5.0",
+    "homeassistant": "2025.10.0",
     "render_readme": true,
     "zip_release": true
 }

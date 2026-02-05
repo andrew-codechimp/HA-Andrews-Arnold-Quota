@@ -1,21 +1,23 @@
 """DataUpdateCoordinator for andrews_arnold_quota."""
+# mypy: disable-error-code="no-untyped-def,method-assign,misc"
 
 from __future__ import annotations
 
 from datetime import timedelta
 
-from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.update_coordinator import (
-    DataUpdateCoordinator,
-    UpdateFailed,
-)
 from homeassistant.exceptions import ConfigEntryAuthFailed
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.helpers.update_coordinator import (
+    UpdateFailed,
+    DataUpdateCoordinator,
+)
 
 from .api import AndrewsArnoldQuotaApiClient
 from .const import DOMAIN, LOGGER
 
 RETRY_TIMES = 4
+
 
 class AndrewsArnoldQuotaDataUpdateCoordinator(DataUpdateCoordinator):
     """Class to manage fetching data from the API."""
@@ -23,7 +25,7 @@ class AndrewsArnoldQuotaDataUpdateCoordinator(DataUpdateCoordinator):
     config_entry: ConfigEntry
 
     quota = any
-    retry_count=0
+    retry_count = 0
 
     def __init__(
         self,
@@ -44,10 +46,10 @@ class AndrewsArnoldQuotaDataUpdateCoordinator(DataUpdateCoordinator):
 
         try:
             data = await self.client.query("quota")
-            if (
-                self.client.error == "Control authorisation failed"
-                or self.client.error == "Bad control-login"
-            ):
+            if self.client.error in {
+                "Control authorisation failed",
+                "Bad control-login",
+            }:
                 raise ConfigEntryAuthFailed(
                     "Unable to login, please re-login."
                 ) from None

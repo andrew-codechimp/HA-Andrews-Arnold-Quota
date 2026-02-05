@@ -8,24 +8,22 @@ from __future__ import annotations
 
 from awesomeversion.awesomeversion import AwesomeVersion
 
-from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant, callback
-from homeassistant.helpers.aiohttp_client import async_get_clientsession
-from homeassistant.helpers.typing import ConfigType
-from homeassistant.helpers import config_validation as cv
-from homeassistant.exceptions import ConfigEntryAuthFailed
-from homeassistant.const import __version__ as HA_VERSION  # noqa: N812
-
 from homeassistant.const import (
     CONF_PASSWORD,
     CONF_USERNAME,
+    Platform,
+    __version__ as HA_VERSION,  # noqa: N812
 )
-
-from .config_flow import CONFIG_VERSION
+from homeassistant.helpers import config_validation as cv
+from homeassistant.exceptions import ConfigEntryAuthFailed
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.helpers.typing import ConfigType
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .api import AndrewsArnoldQuotaApiClient
 from .const import DOMAIN, LOGGER, MIN_HA_VERSION
+from .config_flow import CONFIG_VERSION
 from .coordinator import AndrewsArnoldQuotaDataUpdateCoordinator
 
 PLATFORMS: list[Platform] = [
@@ -71,7 +69,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         password=entry.data[CONF_PASSWORD],
     )
 
-    conn, errorcode = await client.connection_test()
+    conn, _ = await client.connection_test()
 
     if conn is False:
         raise ConfigEntryAuthFailed("Unable to login, please re-login.") from None
@@ -91,7 +89,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     return True
 
 
-async def async_migrate_entry(hass: HomeAssistant, config_entry: ConfigEntry):
+async def async_migrate_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
     """Migrate old config."""
     new_version = CONFIG_VERSION
 
