@@ -1,18 +1,19 @@
 """Sensor platform for andrews_arnold_quota."""
+# mypy: disable-error-code="no-untyped-def,misc,union-attr,return-value"
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 
-from homeassistant.components.sensor import SensorEntity, SensorEntityDescription
+from homeassistant.util import slugify
 from homeassistant.const import (
     UnitOfInformation,
 )
-from homeassistant.util import slugify
+from homeassistant.components.sensor import SensorEntity, SensorEntityDescription
 
 from .const import DOMAIN
-from .coordinator import AndrewsArnoldQuotaDataUpdateCoordinator
 from .entity import AndrewsArnoldQuotaEntity, AndrewsArnoldQuotaEntityDescription
+from .coordinator import AndrewsArnoldQuotaDataUpdateCoordinator
 
 
 @dataclass
@@ -54,11 +55,12 @@ async def async_setup_entry(hass, entry, async_add_devices):
                     AndrewsArnoldQuotaSensor(
                         coordinator=coordinator,
                         entity_description=entity_description,
-                        line_id = line["ID"]
+                        line_id=line["ID"],
                     )
                     for entity_description in ENTITY_DESCRIPTIONS
                 )
             }
+
 
 class AndrewsArnoldQuotaSensor(AndrewsArnoldQuotaEntity, SensorEntity):
     """andrews_arnold_quota Sensor class."""
@@ -71,13 +73,17 @@ class AndrewsArnoldQuotaSensor(AndrewsArnoldQuotaEntity, SensorEntity):
     ) -> None:
         """Initialize the sensor class."""
 
-        entity_description.entity_id = entity_description.entity_id.replace("{line_id}", slugify(line_id.lower()))
+        entity_description.entity_id = entity_description.entity_id.replace(
+            "{line_id}", slugify(line_id.lower())
+        )
         self._attr_translation_placeholders = {"line_id": line_id}
 
         super().__init__(entity_description, coordinator)
 
         self.entity_description = entity_description
-        self._attr_unique_id = f"andrews_arnold_quota_{line_id}_{entity_description.key}".lower()
+        self._attr_unique_id = (
+            f"andrews_arnold_quota_{line_id}_{entity_description.key}".lower()
+        )
         self._attr_has_entity_name = True
 
     @property

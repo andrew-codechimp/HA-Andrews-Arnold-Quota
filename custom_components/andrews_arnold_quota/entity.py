@@ -1,4 +1,5 @@
 """AndrewsArnoldQuotaEntity class."""
+# mypy: disable-error-code="arg-type"
 
 from __future__ import annotations
 
@@ -7,7 +8,7 @@ from dataclasses import dataclass
 from homeassistant.helpers.entity import DeviceInfo, EntityDescription
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import ATTRIBUTION, DOMAIN, NAME, VERSION, MANUFACTURER
+from .const import NAME, DOMAIN, VERSION, ATTRIBUTION, MANUFACTURER
 from .coordinator import AndrewsArnoldQuotaDataUpdateCoordinator
 
 
