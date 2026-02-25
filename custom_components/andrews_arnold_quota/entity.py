@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from homeassistant.helpers.entity import DeviceInfo, EntityDescription
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import NAME, DOMAIN, VERSION, ATTRIBUTION, MANUFACTURER
+from .const import NAME, DOMAIN, ATTRIBUTION, MANUFACTURER
 from .coordinator import AndrewsArnoldQuotaDataUpdateCoordinator
 
 
@@ -39,7 +39,6 @@ class AndrewsArnoldQuotaEntity(CoordinatorEntity):
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, self.unique_id)},
             name=NAME,
-            model=VERSION,
             manufacturer=MANUFACTURER,
         )
         self.entity_description = description
