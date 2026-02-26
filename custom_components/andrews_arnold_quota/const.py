@@ -9,6 +9,6 @@ MIN_HA_VERSION = "2025.10"
 
 DOMAIN = "andrews_arnold_quota"
 NAME = "Andrews & Arnold Quota"
-MANUFACTURER = "@Andrew-CodeChimp"
+MANUFACTURER = "Andrews & Arnold Ltd."
 ATTRIBUTION = "Data provided by https://www.aa.net.uk"
 API_URL = "https://chaos2.aa.net.uk/broadband/"
