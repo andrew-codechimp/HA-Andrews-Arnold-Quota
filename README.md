@@ -28,7 +28,7 @@ As there are [no quotas](https://www.aa.net.uk/etc/news/update-to-monthly-usage-
 | `sensor.andrews_arnold_XXXXX_quota_remaining` | Quota Remaining, XXXXX is your line id to support multiple lines |
 
 
-*Please :star: this repo if you find it useful*  
+*Please ⭐ this repo if you find it useful*  
 *If you want to show your support please*
 
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png)](https://www.buymeacoffee.com/codechimp)
