@@ -4,7 +4,7 @@ from logging import Logger, getLogger
 
 LOGGER: Logger = getLogger(__package__)
 
-MIN_HA_VERSION = "2026.4"
+MIN_HA_VERSION = "2026.8.0"
 
 
 DOMAIN = "andrews_arnold_quota"
