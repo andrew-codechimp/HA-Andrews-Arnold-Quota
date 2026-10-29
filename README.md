@@ -34,32 +34,15 @@ As there are [no quotas](https://www.aa.net.uk/etc/news/update-to-monthly-usage-
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png)](https://www.buymeacoffee.com/codechimp)
 
 
-## Installation
-
-### HACS
-
-This integration can be installed directly via HACS
+## Marketplace/HACS Installation
 
 [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=andrew-codechimp&repository=HA-Andrews-Arnold-Quota&category=Integration)
 
-Or  
-Search for `Andrews & Arnold Quota` in HACS and install it under the "Integrations" category.  
-Restart Home Assistant  
+Or search for Andrews & Arnold Quota within Marketplace/HACS if My Home Assistant does not work for you.
+
+Restart Home Assistant if using HACS
+
 In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "Andrews & Arnold Quota"  
-
-### Manual Installation
-
-<details>
-<summary>Show detailed instructions</summary>
-
-Installation via HACS is recommended, but a manual setup is supported.
-
-* You should take the latest [published release](https://github.com/andrew-codechimp/ha-andrews-arnold-quota/releases).  
-* To install, place the contents of `custom_components` into the `<config directory>/custom_components` folder of your Home Assistant installation.  
-* Restart Home Assistant.
-* In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "Andrews & Arnold Quota"
-
-</details>
 
 ## Configuration
 
