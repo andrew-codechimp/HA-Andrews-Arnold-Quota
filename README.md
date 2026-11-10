@@ -10,9 +10,9 @@
 [![License][license-shield]](LICENSE)
 
 <!-- ha-marketplace:exclude-end -->
-Integration to get broadband quota from [Andrews & Arnold](https://www.aa.net.uk).
+⚠️RETIRED - Andrews & Arnold are discontinuing their API in 2026.
 
-As there are [no quotas](https://www.aa.net.uk/etc/news/update-to-monthly-usage-quotas/) on the non-lite packages I am no longer able to test or maintain this integration, leaving it for those on lite packages.  
+Integration to get broadband quota from [Andrews & Arnold](https://www.aa.net.uk).
 
 ![Andrews & Arnold Device Info](https://github.com/andrew-codechimp/HA-Andrews-Arnold-Quota/blob/main/images/screenshot.png "Andrews & Arnold Device Info")
 
